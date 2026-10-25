@@ -1,0 +1,55 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.17, pytest-9.1.1, pluggy-1.7.0 -- /usr/bin/python
+cachedir: .pytest_cache
+rootdir: /home/claude/mecaia
+plugins: langsmith-0.14.12, anyio-4.15.1
+collecting ... collected 46 items
+
+tests/test_mecaia.py::test_kawasaki_400_es_ambiguo PASSED
+tests/test_mecaia.py::test_modelo_especifico_y_anio PASSED
+tests/test_mecaia.py::test_vehiculos_pedidos[Hyundai Accent-hyundai_accent_14_2011] PASSED
+tests/test_mecaia.py::test_vehiculos_pedidos[mi elantra-hyundai_elantra_16_2016] PASSED
+tests/test_mecaia.py::test_vehiculos_pedidos[Suzuki Swift-suzuki_swift_12_2017] PASSED
+tests/test_mecaia.py::test_vehiculos_pedidos[Suzuki Alto-suzuki_alto_08_2013] PASSED
+tests/test_mecaia.py::test_vehiculos_pedidos[Toyota Yaris-toyota_yaris_15_2014] PASSED
+tests/test_mecaia.py::test_vehiculos_pedidos[Suzuki Gixxer 150-suzuki_gixxer_150_2015] PASSED
+tests/test_mecaia.py::test_vehiculos_pedidos[KTM RC200-ktm_rc_200_2014] PASSED
+tests/test_mecaia.py::test_vehiculos_pedidos[MT-03-yamaha_mt03_2016] PASSED
+tests/test_mecaia.py::test_vehiculos_pedidos[Yamaha R3-yamaha_r3_2015] PASSED
+tests/test_mecaia.py::test_vehiculos_pedidos[Yamaha R15-yamaha_r15_v3_2017] PASSED
+tests/test_mecaia.py::test_vehiculos_pedidos[Honda CBR-250-honda_cbr250r_2011] PASSED
+tests/test_mecaia.py::test_vehiculos_pedidos[Honda CBR-300-honda_cbr300r_2014] PASSED
+tests/test_mecaia.py::test_vehiculos_pedidos[Honda CB-190R-honda_cb190r_2015] PASSED
+tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[honda_cb190r_2015] PASSED
+tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[honda_cbr250r_2011] PASSED
+tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[honda_cbr300r_2014] PASSED
+tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[hyundai_accent_14_2011] PASSED
+tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[hyundai_elantra_16_2016] PASSED
+tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[kawasaki_kz400_1974] PASSED
+tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[kawasaki_ninja_400_2018] PASSED
+tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[kawasaki_z400_2019] PASSED
+tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[ktm_rc_200_2014] PASSED
+tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[suzuki_alto_08_2013] PASSED
+tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[suzuki_gixxer_150_2015] PASSED
+tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[suzuki_swift_12_2017] PASSED
+tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[toyota_yaris_15_2014] PASSED
+tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[yamaha_mt03_2016] PASSED
+tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[yamaha_r15_v3_2017] PASSED
+tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[yamaha_r3_2015] PASSED
+tests/test_mecaia.py::test_procedimiento_por_palabras PASSED
+tests/test_mecaia.py::test_seguridad_detener[los frenos no responden] PASSED
+tests/test_mecaia.py::test_seguridad_detener[siento olor a bencina] PASSED
+tests/test_mecaia.py::test_seguridad_detener[sale humo del motor] PASSED
+tests/test_mecaia.py::test_seguridad_detener[se encendi\xf3 la luz de aceite] PASSED
+tests/test_mecaia.py::test_seguridad_detener[el motor se sobrecalent\xf3] PASSED
+tests/test_mecaia.py::test_seguridad_ok_y_precaucion PASSED
+tests/test_mecaia.py::test_memoria PASSED
+tests/test_mecaia.py::test_flujo_kawasaki_con_aclaracion PASSED
+tests/test_mecaia.py::test_memoria_largo_plazo_entre_conversaciones PASSED
+tests/test_mecaia.py::test_registrar_mantencion_y_recordatorio PASSED
+tests/test_mecaia.py::test_no_inventa_datos PASSED
+tests/test_mecaia.py::test_deriva_en_riesgo PASSED
+tests/test_mecaia.py::test_modo_claude_usa_herramientas PASSED
+tests/test_mecaia.py::test_modo_claude_respeta_seguridad_en_codigo PASSED
+
+============================== 46 passed in 1.08s ==============================
