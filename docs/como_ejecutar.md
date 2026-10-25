@@ -56,6 +56,9 @@ Aparece un chat en la terminal. Prueba con:
 - `cómo reviso la presión de los neumáticos`
 - `mi moto no frena, ¿qué hago?`
 - `qué aceite lleva un Yamaha R3`
+- `cuánto rinde el estanque de mi Suzuki Swift`
+- `cada cuánto se cambian las bujías de un auto`
+- `muchas gracias`
 
 Escribe `salir` para terminar. La línea `[plan]` muestra las decisiones que tomó el agente.
 
@@ -75,7 +78,7 @@ Nunca escribas la API key dentro del código ni la subas a GitHub.
 python -m pytest -v
 ```
 
-Al final debe decir `46 passed`. El resultado de referencia está en
+Al final debe decir `59 passed`. El resultado de referencia está en
 `evidencias/resultado_pruebas.txt`.
 
 ## 7. Borrar la memoria para empezar de cero

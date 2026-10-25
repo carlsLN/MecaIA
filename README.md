@@ -3,12 +3,15 @@
 Agente de IA que ayuda a personas dueñas de un auto o una moto con la mantención de su vehículo.
 Ante una pregunta como "¿qué aceite necesito para mi Kawasaki 400?", MecaIA:
 
-1. revisa si hay un riesgo de seguridad (y deriva a un mecánico si lo hay),
+1. revisa si hay un riesgo de seguridad y, si lo hay, recomienda acudir a su mecánico de confianza,
 2. confirma el modelo exacto del vehículo (pregunta si hay más de uno posible),
 3. busca el dato en una base de conocimiento verificada, en vez de responder de memoria,
 4. responde con el dato exacto, las herramientas, qué hacer si no las tienes, el paso a paso,
-   recordatorios (por ejemplo, cambiar el filtro junto con el aceite) y cuándo ir al mecánico,
-5. recuerda los vehículos y las mantenciones del usuario para las próximas consultas.
+   recordatorios (por ejemplo, cambiar el filtro junto con el aceite) y cuándo acudir a su mecánico de confianza,
+5. responde dudas frecuentes: cada cuánto se hace cada mantención y cuánto demora (bujías, balatas,
+   filtro de aire, correa de distribución, etc.) y cuánto rinde el estanque de cada auto o moto,
+6. recuerda los vehículos y las mantenciones del usuario para las próximas consultas,
+7. conversa con cordialidad: responde saludos y agradecimientos, y siempre ofrece seguir ayudando.
 
 Proyecto de la asignatura Ingeniería de Soluciones con Inteligencia Artificial (Evaluación Parcial 2).
 
@@ -57,22 +60,23 @@ cambia con la variable `MECAIA_MODELO` (por defecto `claude-opus-5-5`).
 | Requisito de la evaluación | Dónde está |
 | --- | --- |
 | Framework de agentes | LangGraph (`mecaia/grafo.py`), con `ChatAnthropic` de LangChain como modelo |
-| Herramientas de consulta | `buscar_vehiculo`, `obtener_datos_vehiculo`, `buscar_procedimiento`, `mis_vehiculos`, `revisar_seguridad` |
+| Herramientas de consulta | `buscar_vehiculo`, `obtener_datos_vehiculo`, `buscar_procedimiento`, `consultar_mantenimiento_periodico`, `mis_vehiculos`, `revisar_seguridad` |
 | Herramientas de escritura | `guardar_vehiculo`, `registrar_mantencion` (escriben en la memoria de largo plazo) |
 | Razonamiento | Nodo `agente`: Claude decide qué herramienta usar y redacta la respuesta con los datos obtenidos |
 | Memoria de corto plazo | Checkpointer de LangGraph (`SqliteSaver`): guarda mensajes, vehículo confirmado y preguntas pendientes de cada conversación |
 | Memoria de largo plazo | `mecaia/memoria.py` (SQLite): vehículos y mantenciones de cada usuario entre conversaciones |
 | Planificación | El grafo ordena las etapas: seguridad → interpretar → aclarar, registrar o responder. Cada turno deja su plan en `estado["plan"]` (`--ver-plan`) |
-| Decisiones adaptativas | Aristas condicionales: deriva si hay riesgo, pregunta si el modelo es ambiguo o falta, registra si el usuario cuenta una mantención, usa la memoria si no menciona el vehículo |
-| Evidencias de pruebas | `tests/` (46 pruebas), `evidencias/resultado_pruebas.txt`, `evidencias/conversacion_demo.md` |
+| Decisiones adaptativas | Aristas condicionales: recomienda acudir al mecánico de confianza si hay riesgo, responde con cordialidad a saludos y agradecimientos, pregunta si el modelo es ambiguo o falta, registra si el usuario cuenta una mantención, usa la memoria si no menciona el vehículo |
+| Evidencias de pruebas | `tests/` (59 pruebas), `evidencias/resultado_pruebas.txt`, `evidencias/conversacion_demo.md` |
 
 ## Arquitectura
 
 ```mermaid
 graph TD
     inicio([Mensaje del usuario]) --> seguridad[1. Seguridad<br/>reglas en código]
-    seguridad -- riesgo --> derivar[Derivar a mecánico]
+    seguridad -- riesgo --> mecanico[Recomendar acudir al<br/>mecánico de confianza]
     seguridad -- sin riesgo --> interpretar[2. Interpretar<br/>vehículo, intención, procedimiento]
+    interpretar -- saludo, gracias o despedida --> conversar[Responder con cordialidad]
     interpretar -- varios modelos o falta el vehículo --> aclarar[Preguntar al usuario]
     interpretar -- cuenta una mantención --> registrar[Registrar en memoria]
     interpretar -- modo demo --> responder[3. Responder desde la base]
@@ -80,7 +84,8 @@ graph TD
     agente -- pide herramienta --> herramientas[Herramientas]
     herramientas --> agente
     agente -- respuesta final --> fin([Respuesta])
-    derivar --> fin
+    mecanico --> fin
+    conversar --> fin
     aclarar --> fin
     registrar --> fin
     responder --> fin
@@ -106,7 +111,7 @@ El chequeo de seguridad corre en código antes que el modelo de lenguaje: una pr
 | `mecaia/respuestas.py` | Textos de respuesta del modo demo |
 | `mecaia/conocimiento/` | Base de conocimiento: 16 vehículos, 3 procedimientos y reglas de seguridad |
 | `docs/` | Diseño (diagramas, flujos, memoria) y guía de ejecución |
-| `tests/` | Pruebas automáticas |
+| `tests/` | Pruebas automáticas (59) |
 | `evidencias/` | Resultados de pruebas y conversación de ejemplo |
 | `scripts/generar_evidencias.py` | Genera la conversación de ejemplo |
 
@@ -119,6 +124,13 @@ Vehículos cargados:
   YZF-R15 V3, Honda CBR250R, CBR300R y CB190R.
 
 Procedimientos: cambio de aceite, revisión de pastillas de freno y presión de neumáticos.
+
+Mantención periódica (`mantenimiento_periodico.json`): cada cuánto se hace y cuánto demora el cambio
+de aceite, filtro de aire, bujías, pastillas de freno (balatas), líquido de frenos, refrigerante,
+correa de distribución, neumáticos, cadena y kit de arrastre, y batería, para autos y motos.
+
+Cada vehículo incluye además la capacidad del estanque y un rendimiento aproximado, con los que
+el agente estima la autonomía.
 
 Cada dato técnico lleva `fuente` y `verificado`. Los valores actuales son de referencia y están
 marcados `verificado: false` hasta contrastarlos con el manual oficial de cada vehículo. Cuando un

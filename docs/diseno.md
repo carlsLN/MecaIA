@@ -7,16 +7,19 @@ imágenes.
 
 Una persona dueña de un auto o una moto quiere saber qué necesita para una mantención básica (qué
 aceite, qué herramientas, qué hacer si no las tiene) sin arriesgarse a seguir datos incorrectos de
-internet. MecaIA responde con datos de una base verificada, avisa cuando algo es peligroso y deriva
-a un mecánico cuando el caso excede lo que se puede hacer en casa.
+internet. MecaIA responde con datos de una base verificada, avisa cuando algo es peligroso y recomienda
+acudir al mecánico de confianza cuando el caso excede lo que se puede hacer en casa. También
+responde dudas frecuentes (cada cuánto se hace una mantención, cuánto rinde el estanque) y conversa
+con cordialidad.
 
 ## 2. Flujo del agente (grafo de LangGraph)
 
 ```mermaid
 graph TD
     inicio([Mensaje del usuario]) --> seguridad[1. Seguridad]
-    seguridad -- riesgo --> derivar[Derivar a mecánico]
+    seguridad -- riesgo --> mecanico[Recomendar acudir al<br/>mecánico de confianza]
     seguridad -- sin riesgo --> interpretar[2. Interpretar]
+    interpretar -- saludo, gracias o despedida --> conversar[Responder con cordialidad]
     interpretar -- varios modelos o falta el vehículo --> aclarar[Preguntar al usuario]
     interpretar -- cuenta una mantención --> registrar[Registrar en memoria]
     interpretar -- modo demo --> responder[3. Responder desde la base]
@@ -24,7 +27,8 @@ graph TD
     agente -- pide herramienta --> herramientas[Herramientas]
     herramientas --> agente
     agente --> fin([Respuesta])
-    derivar --> fin
+    mecanico --> fin
+    conversar --> fin
     aclarar --> fin
     registrar --> fin
     responder --> fin
@@ -32,8 +36,9 @@ graph TD
 
 | Nodo | Qué decide |
 | --- | --- |
-| Seguridad | Reglas en código detectan frenos que fallan, olor a combustible, humo, sobrecalentamiento, etc. Si hay riesgo, el flujo termina en "Derivar" sin pasar por el modelo |
-| Interpretar | Identifica vehículo, intención (consulta o registro) y procedimiento. Busca el vehículo en este orden: el mensaje, la respuesta a una pregunta anterior, la memoria de la conversación, la memoria de largo plazo |
+| Seguridad | Reglas en código detectan frenos que fallan, olor a combustible, humo, sobrecalentamiento, etc. Si hay riesgo, el flujo termina recomendando acudir al mecánico de confianza, sin pasar por el modelo |
+| Interpretar | Identifica vehículo, intención (consulta de un procedimiento, intervalo de mantención, estanque, registro o conversación) y procedimiento. Busca el vehículo en este orden: el mensaje, la respuesta a una pregunta anterior, la memoria de la conversación, la memoria de largo plazo |
+| Conversar | Responde saludos, agradecimientos y despedidas con calidez y ofrece seguir ayudando |
 | Aclarar | Pregunta cuando hay más de un modelo posible (ej. "Kawasaki 400") o falta el vehículo, y deja la pregunta pendiente en el estado |
 | Registrar | Escribe la mantención en la memoria de largo plazo y calcula cuándo toca la próxima |
 | Responder / Agente | Arma la respuesta con los datos de la base. En modo Claude, el modelo decide qué herramientas llamar |
@@ -92,10 +97,11 @@ erDiagram
 
 Archivos JSON en `mecaia/conocimiento/`:
 
-- `vehiculos/`: un archivo por modelo con aceite, capacidades, filtro, torques y medidas. Cada grupo
+- `vehiculos/`: un archivo por modelo con aceite, capacidades, filtro, torques, medidas, estanque y rendimiento. Cada grupo
   de datos tiene `fuente` y `verificado`.
 - `procedimientos/`: pasos, herramientas, alternativas sin herramientas, recordatorios,
-  advertencias y señales para ir al mecánico.
+  advertencias y señales para acudir al mecánico de confianza.
+- `mantenimiento_periodico.json`: cada cuánto se hace cada mantención y cuánto demora, para autos y motos.
 - `seguridad.json`: patrones de riesgo en dos niveles, `detener` y `precaucion`.
 
 ## 6. Decisiones de diseño

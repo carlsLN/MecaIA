@@ -4,6 +4,22 @@ Generado con `python scripts/generar_evidencias.py`. Usuario: ana. La conversaci
 
 ## Conversación "principal"
 
+**Usuario:** hola
+
+> Plan del agente: Seguridad: ok → Vehículo: 0 candidatos → Intención: conversación (saludo) → Decisión: responder con cordialidad y ofrecer más ayuda
+
+**MecaIA:**
+
+¡Hola! Soy MecaIA, tu asistente para la mantención de autos y motos. Puedo ayudarte con:
+- Cambio de aceite, revisión de pastillas de freno y presión de neumáticos, paso a paso
+- Cada cuánto se hace cada mantención y cuánto demora (bujías, balatas, filtro de aire, correa de distribución, cadena y más)
+- Cuánto rinde el estanque de tu auto o moto
+- Anotar las mantenciones que hagas para recordarte la próxima
+
+¿En qué te ayudo hoy?
+
+---
+
 **Usuario:** ¿Qué aceite necesito para mi Kawasaki 400?
 
 > Plan del agente: Seguridad: ok → Vehículo: 3 candidatos → Intención: consulta; procedimiento: cambio_aceite → Decisión: preguntar antes de dar datos
@@ -70,10 +86,12 @@ _Datos por confirmar con el manual. Fuente: Manual del propietario Kawasaki Ninj
 - El aceite y el escape pueden estar muy calientes: usa guantes.
 - Nunca te pongas bajo un auto sostenido solo por la gata: usa caballetes (torres) o rampas.
 
-**Ve al mecánico si**
+**Acude a tu mecánico de confianza si**
 - La rosca del tapón está dañada o el tapón no aprieta.
 - El aceite drenado sale lechoso (posible mezcla con refrigerante), con partículas metálicas o con olor fuerte a combustible.
 - La luz de presión de aceite queda encendida después del cambio.
+
+¿Tienes alguna otra duda? Aquí estoy para ayudarte.
 
 ---
 
@@ -83,7 +101,7 @@ _Datos por confirmar con el manual. Fuente: Manual del propietario Kawasaki Ninj
 
 **MecaIA:**
 
-Listo, anoté: cambio de aceite de motor de tu Kawasaki Ninja 400 a los 12.000 km. Te toca el próximo cerca de los 18.000 km.
+Listo, anoté: cambio de aceite de motor de tu Kawasaki Ninja 400 a los 12.000 km. Te toca el próximo cerca de los 18.000 km. ¿Tienes alguna otra duda? Aquí estoy para ayudarte.
 
 ---
 
@@ -115,19 +133,21 @@ Listo, anoté: cambio de aceite de motor de tu Kawasaki Ninja 400 a los 12.000 k
 **Seguridad**
 - No conduzcas con un neumático con corte, globo o tela a la vista.
 
-**Ve al mecánico si**
+**Acude a tu mecánico de confianza si**
 - El neumático pierde aire de forma repetida.
 - Hay un globo, corte en el costado o desgaste irregular marcado.
+
+¿Tienes alguna otra duda? Aquí estoy para ayudarte.
 
 ---
 
 **Usuario:** mi moto no frena, ¿qué hago?
 
-> Plan del agente: Seguridad: detener (Falla de frenos) → Decisión: derivar a mecánico, sin pasos de reparación
+> Plan del agente: Seguridad: detener (Falla de frenos) → Decisión: recomendar acudir al mecánico de confianza, sin pasos de reparación
 
 **MecaIA:**
 
-Esto es un tema de seguridad (falla de frenos). No te voy a dar pasos para repararlo tú: no uses el vehículo y llévalo a un mecánico (si no es seguro moverlo, pide una grúa o asistencia en ruta). Cuéntale cuándo empezó, en qué condiciones pasa y cualquier ruido u olor.
+Esto es un tema de seguridad (falla de frenos), así que no te voy a dar pasos para repararlo tú. Lo mejor es que no uses el vehículo y acudas a tu mecánico de confianza (si no es seguro moverlo, pide una grúa o asistencia en ruta). Cuéntale cuándo empezó, en qué condiciones pasa y si notas algún ruido u olor.
 
 ---
 
@@ -188,10 +208,12 @@ _Datos por confirmar con el manual. Fuente: Manual del propietario Kawasaki Ninj
 - El aceite y el escape pueden estar muy calientes: usa guantes.
 - Nunca te pongas bajo un auto sostenido solo por la gata: usa caballetes (torres) o rampas.
 
-**Ve al mecánico si**
+**Acude a tu mecánico de confianza si**
 - La rosca del tapón está dañada o el tapón no aprieta.
 - El aceite drenado sale lechoso (posible mezcla con refrigerante), con partículas metálicas o con olor fuerte a combustible.
 - La luz de presión de aceite queda encendida después del cambio.
+
+¿Tienes alguna otra duda? Aquí estoy para ayudarte.
 
 ---
 
@@ -244,9 +266,76 @@ _Datos por confirmar con el manual. Fuente: Valor de referencia, por contrastar 
 - El aceite y el escape pueden estar muy calientes: usa guantes.
 - Nunca te pongas bajo un auto sostenido solo por la gata: usa caballetes (torres) o rampas.
 
-**Ve al mecánico si**
+**Acude a tu mecánico de confianza si**
 - La rosca del tapón está dañada o el tapón no aprieta.
 - El aceite drenado sale lechoso (posible mezcla con refrigerante), con partículas metálicas o con olor fuerte a combustible.
 - La luz de presión de aceite queda encendida después del cambio.
+
+¿Tienes alguna otra duda? Aquí estoy para ayudarte.
+
+---
+
+**Usuario:** cuánto rinde el estanque de mi Yamaha R3
+
+> Plan del agente: Seguridad: ok → Vehículo: yamaha_r3_2015, mencionado en el mensaje → Intención: estanque; procedimiento: ninguno → Decisión: responder con el estanque y la autonomía estimada
+
+**MecaIA:**
+
+**Estanque de tu Yamaha YZF-R3**
+
+- Capacidad del estanque: 14 L
+- Rendimiento aproximado: 25 km por litro
+- Autonomía estimada con el estanque lleno: unos 350 km
+
+El rendimiento real cambia según cómo manejes, la carga, el tráfico y la mantención. Para no quedarte en pana, carga cuando se encienda la luz de reserva.
+
+_Datos por confirmar con el manual. Fuente: Valor de referencia (rendimiento mixto aproximado), por contrastar con el manual._
+
+¿Tienes alguna otra duda? Aquí estoy para ayudarte.
+
+---
+
+**Usuario:** cada cuánto se cambian las bujías de un auto
+
+> Plan del agente: Seguridad: ok → Vehículo: yamaha_r3_2015, memoria de corto plazo (esta conversación) → Intención: intervalo; ítems: bujias → Decisión: responder con intervalos de mantención
+
+**MecaIA:**
+
+**Cada cuánto: Bujías para tu Yamaha YZF-R3**
+
+- Cada cuánto: Cada 8.000 a 12.000 km (convencionales)
+- Tiempo de trabajo: 30 a 60 minutos; más en motos carenadas
+
+_Rangos generales de referencia; el manual de tu vehículo siempre manda._
+
+¿Tienes alguna otra duda? Aquí estoy para ayudarte.
+
+---
+
+**Usuario:** cada cuánto cambio las balatas de mi moto
+
+> Plan del agente: Seguridad: ok → Vehículo: yamaha_r3_2015, memoria de corto plazo (esta conversación) → Intención: intervalo; ítems: pastillas_freno → Decisión: responder con intervalos de mantención
+
+**MecaIA:**
+
+**Cada cuánto: Pastillas de freno (balatas) para tu Yamaha YZF-R3**
+
+- Cada cuánto: Revisarlas cada 5.000 km; se cambian típicamente entre 10.000 y 20.000 km según el uso
+- Tiempo de trabajo: 30 a 60 minutos por rueda
+- Nota: Se cambian cuando queda menos de 2 a 3 mm de material. Los frenos son críticos: si no tienes experiencia, que lo haga tu mecánico de confianza.
+
+_Rangos generales de referencia; el manual de tu vehículo siempre manda._
+
+¿Tienes alguna otra duda? Aquí estoy para ayudarte.
+
+---
+
+**Usuario:** muchas gracias
+
+> Plan del agente: Seguridad: ok → Vehículo: yamaha_r3_2015, memoria de corto plazo (esta conversación) → Intención: conversación (gracias) → Decisión: responder con cordialidad y ofrecer más ayuda
+
+**MecaIA:**
+
+¡No hay de qué! Estoy aquí para ayudarte. Si tienes alguna otra duda con tu Yamaha YZF-R3 o con otro vehículo, escríbeme cuando quieras.
 
 ---

@@ -1,9 +1,9 @@
 ============================= test session starts ==============================
 platform linux -- Python 3.13.17, pytest-9.1.1, pluggy-1.7.0 -- /usr/bin/python
 cachedir: .pytest_cache
-rootdir: /home/claude/mecaia
+rootdir: /home/claude/mecaia-remoto
 plugins: langsmith-0.14.12, anyio-4.15.1
-collecting ... collected 46 items
+collecting ... collected 59 items
 
 tests/test_mecaia.py::test_kawasaki_400_es_ambiguo PASSED
 tests/test_mecaia.py::test_modelo_especifico_y_anio PASSED
@@ -48,8 +48,21 @@ tests/test_mecaia.py::test_flujo_kawasaki_con_aclaracion PASSED
 tests/test_mecaia.py::test_memoria_largo_plazo_entre_conversaciones PASSED
 tests/test_mecaia.py::test_registrar_mantencion_y_recordatorio PASSED
 tests/test_mecaia.py::test_no_inventa_datos PASSED
-tests/test_mecaia.py::test_deriva_en_riesgo PASSED
+tests/test_mecaia.py::test_riesgo_recomienda_mecanico_de_confianza PASSED
+tests/test_mecaia.py::test_responde_cordial_a_gracias PASSED
+tests/test_mecaia.py::test_saludo_y_despedida[hola-\xa1Hola! Soy MecaIA] PASSED
+tests/test_mecaia.py::test_saludo_y_despedida[chao-\xa1Que te vaya muy bien!] PASSED
+tests/test_mecaia.py::test_las_respuestas_invitan_a_seguir_preguntando PASSED
+tests/test_mecaia.py::test_estanque_y_autonomia PASSED
+tests/test_mecaia.py::test_estanque_pregunta_el_vehiculo_si_falta PASSED
+tests/test_mecaia.py::test_estanque_sin_dato_no_inventa PASSED
+tests/test_mecaia.py::test_intervalo_bujias_auto PASSED
+tests/test_mecaia.py::test_intervalo_balatas_usa_tipo_del_vehiculo PASSED
+tests/test_mecaia.py::test_intervalo_correa_no_aplica_a_moto PASSED
+tests/test_mecaia.py::test_intervalo_aceite_incluye_dato_del_modelo PASSED
+tests/test_mecaia.py::test_cuanto_demora_una_mantencion PASSED
+tests/test_mecaia.py::test_tabla_general_de_mantenciones PASSED
 tests/test_mecaia.py::test_modo_claude_usa_herramientas PASSED
 tests/test_mecaia.py::test_modo_claude_respeta_seguridad_en_codigo PASSED
 
-============================== 46 passed in 1.08s ==============================
+============================== 59 passed in 1.69s ==============================
