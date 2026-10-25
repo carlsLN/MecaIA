@@ -3,8 +3,15 @@
   "tipo": "moto",
   "marca": "Kawasaki",
   "modelo": "KZ400 (clásica)",
-  "anios": [1974, 1984],
-  "alias": ["kz400", "kz 400", "kawasaki 400"],
+  "anios": [
+    1974,
+    1984
+  ],
+  "alias": [
+    "kz400",
+    "kz 400",
+    "kawasaki 400"
+  ],
   "motor": "398 cc, 2 cilindros, refrigeración por aire",
   "aceite_motor": {
     "viscosidad": null,
@@ -14,5 +21,11 @@
     "fuente": "Sin datos cargados todavía: revisar manual de servicio de época",
     "verificado": false
   },
-  "notas": "Moto clásica: sellos y embrague pueden requerir aceite específico. Recomendar consultar manual o mecánico especialista."
+  "notas": "Moto clásica: sellos y embrague pueden requerir aceite específico. Conviene revisar el manual o acudir a un mecánico de confianza con experiencia en motos clásicas.",
+  "combustible": {
+    "estanque_l": null,
+    "rendimiento_km_l": null,
+    "fuente": "Valor de referencia (rendimiento mixto aproximado), por contrastar con el manual",
+    "verificado": false
+  }
 }

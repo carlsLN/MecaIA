@@ -1,0 +1,79 @@
+{
+  "fuente": "Rangos generales de referencia; el manual de tu vehículo siempre manda",
+  "verificado": false,
+  "items": [
+    {
+      "id": "aceite",
+      "nombre": "Aceite y filtro de aceite",
+      "palabras_clave": ["aceite", "filtro de aceite"],
+      "auto": {"intervalo": "Cada 10.000 km o 12 meses, lo que ocurra primero", "tiempo_trabajo": "30 a 45 minutos"},
+      "moto": {"intervalo": "Cada 3.000 a 6.000 km según el modelo, o 12 meses", "tiempo_trabajo": "30 a 45 minutos"},
+      "nota": "El intervalo exacto de tu modelo aparece cuando preguntas por el cambio de aceite de tu vehículo."
+    },
+    {
+      "id": "filtro_aire",
+      "nombre": "Filtro de aire",
+      "palabras_clave": ["filtro de aire"],
+      "auto": {"intervalo": "Cada 15.000 a 20.000 km; antes si andas seguido por caminos de tierra", "tiempo_trabajo": "10 a 15 minutos"},
+      "moto": {"intervalo": "Cada 10.000 a 12.000 km; antes si andas por tierra", "tiempo_trabajo": "20 a 40 minutos"}
+    },
+    {
+      "id": "bujias",
+      "nombre": "Bujías",
+      "palabras_clave": ["bujia", "bujias"],
+      "auto": {"intervalo": "Convencionales: cada 20.000 a 30.000 km. Iridio o platino: cada 60.000 a 100.000 km", "tiempo_trabajo": "30 a 60 minutos"},
+      "moto": {"intervalo": "Cada 8.000 a 12.000 km (convencionales)", "tiempo_trabajo": "30 a 60 minutos; más en motos carenadas"}
+    },
+    {
+      "id": "pastillas_freno",
+      "nombre": "Pastillas de freno (balatas)",
+      "palabras_clave": ["pastilla", "pastillas", "balata", "balatas"],
+      "auto": {"intervalo": "Revisarlas cada 10.000 km; se cambian típicamente entre 30.000 y 50.000 km según el uso", "tiempo_trabajo": "1 a 2 horas por eje"},
+      "moto": {"intervalo": "Revisarlas cada 5.000 km; se cambian típicamente entre 10.000 y 20.000 km según el uso", "tiempo_trabajo": "30 a 60 minutos por rueda"},
+      "nota": "Se cambian cuando queda menos de 2 a 3 mm de material. Los frenos son críticos: si no tienes experiencia, que lo haga tu mecánico de confianza."
+    },
+    {
+      "id": "liquido_frenos",
+      "nombre": "Líquido de frenos",
+      "palabras_clave": ["liquido de frenos", "liquido de freno"],
+      "auto": {"intervalo": "Cada 2 años, aunque el nivel esté bien (absorbe humedad)", "tiempo_trabajo": "Cerca de 1 hora"},
+      "moto": {"intervalo": "Cada 2 años, aunque el nivel esté bien (absorbe humedad)", "tiempo_trabajo": "Cerca de 1 hora"}
+    },
+    {
+      "id": "refrigerante",
+      "nombre": "Refrigerante (anticongelante)",
+      "palabras_clave": ["refrigerante", "anticongelante", "radiador"],
+      "auto": {"intervalo": "Cada 40.000 a 60.000 km o cada 2 a 4 años, según el tipo de refrigerante", "tiempo_trabajo": "Cerca de 1 hora"},
+      "moto": {"intervalo": "Cada 2 a 3 años en motos con refrigeración líquida; las refrigeradas por aire no llevan", "tiempo_trabajo": "Cerca de 1 hora"}
+    },
+    {
+      "id": "distribucion",
+      "nombre": "Correa de distribución",
+      "palabras_clave": ["distribucion", "correa de distribucion", "cadena de distribucion"],
+      "auto": {"intervalo": "Si tu motor usa correa: cada 60.000 a 100.000 km. Si usa cadena, no tiene cambio fijo, solo revisión", "tiempo_trabajo": "3 a 5 horas, en taller"},
+      "moto": null,
+      "nota": "Si la correa se corta, el motor puede sufrir daños graves. Es un trabajo para tu mecánico de confianza."
+    },
+    {
+      "id": "neumaticos",
+      "nombre": "Neumáticos",
+      "palabras_clave": ["neumatico", "neumaticos", "rotacion", "rotar"],
+      "auto": {"intervalo": "Rotarlos cada 10.000 km. Cambiarlos cuando el dibujo llega a 1,6 mm (testigo de desgaste) o a los 5 a 6 años", "tiempo_trabajo": "30 a 60 minutos"},
+      "moto": {"intervalo": "Cambiarlos al llegar al testigo de desgaste o a los 5 años; el trasero suele durar menos", "tiempo_trabajo": "30 a 60 minutos por rueda"}
+    },
+    {
+      "id": "kit_arrastre",
+      "nombre": "Cadena y kit de arrastre",
+      "palabras_clave": ["cadena", "kit de arrastre", "pinon", "corona"],
+      "auto": null,
+      "moto": {"intervalo": "Limpiar y lubricar la cadena cada 500 a 1.000 km (y después de andar con lluvia), revisando la holgura. Kit completo cada 15.000 a 25.000 km", "tiempo_trabajo": "15 minutos lubricar; 1 a 2 horas cambiar el kit"}
+    },
+    {
+      "id": "bateria",
+      "nombre": "Batería",
+      "palabras_clave": ["bateria"],
+      "auto": {"intervalo": "Revisarla una vez al año; dura entre 3 y 5 años", "tiempo_trabajo": "15 a 20 minutos cambiarla"},
+      "moto": {"intervalo": "Dura entre 2 y 4 años; si la moto pasa mucho tiempo parada, usa un mantenedor de carga", "tiempo_trabajo": "15 a 20 minutos cambiarla"}
+    }
+  ]
+}

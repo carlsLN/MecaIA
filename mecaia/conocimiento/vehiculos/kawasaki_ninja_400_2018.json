@@ -3,8 +3,16 @@
   "tipo": "moto",
   "marca": "Kawasaki",
   "modelo": "Ninja 400",
-  "anios": [2018, 2024],
-  "alias": ["ninja 400", "ninja400", "ex400", "kawasaki 400"],
+  "anios": [
+    2018,
+    2024
+  ],
+  "alias": [
+    "ninja 400",
+    "ninja400",
+    "ex400",
+    "kawasaki 400"
+  ],
   "motor": "399 cc, 2 cilindros en línea, refrigeración líquida",
   "aceite_motor": {
     "viscosidad": "SAE 10W-40",
@@ -17,7 +25,9 @@
   },
   "filtro_aceite": {
     "codigo_original": "Kawasaki 16097-0008",
-    "equivalentes": ["HiFlo HF303"],
+    "equivalentes": [
+      "HiFlo HF303"
+    ],
     "fuente": "Catálogo de repuestos Kawasaki",
     "verificado": false
   },
@@ -30,6 +40,12 @@
   "medidas_herramientas": {
     "tapon_carter_mm": 17,
     "fuente": "Por confirmar en el manual de servicio",
+    "verificado": false
+  },
+  "combustible": {
+    "estanque_l": 14,
+    "rendimiento_km_l": 25,
+    "fuente": "Valor de referencia (rendimiento mixto aproximado), por contrastar con el manual",
     "verificado": false
   }
 }

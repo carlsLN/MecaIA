@@ -3,8 +3,15 @@
   "tipo": "auto",
   "marca": "Toyota",
   "modelo": "Yaris 1.5",
-  "anios": [2014, 2019],
-  "alias": ["yaris", "yaris 1.5", "toyota yaris"],
+  "anios": [
+    2014,
+    2019
+  ],
+  "alias": [
+    "yaris",
+    "yaris 1.5",
+    "toyota yaris"
+  ],
   "motor": "1.5 L bencinero, 4 cilindros",
   "aceite_motor": {
     "viscosidad": "SAE 5W-30 (o 0W-20 según mercado y manual)",
@@ -30,6 +37,12 @@
   "medidas_herramientas": {
     "tapon_carter_mm": 14,
     "fuente": "Por confirmar en el manual de servicio",
+    "verificado": false
+  },
+  "combustible": {
+    "estanque_l": 42,
+    "rendimiento_km_l": 15,
+    "fuente": "Valor de referencia (rendimiento mixto aproximado), por contrastar con el manual",
     "verificado": false
   }
 }

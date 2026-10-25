@@ -20,10 +20,10 @@
     "Pastillas nuevas necesitan asentarse: frena suave los primeros 100 a 200 km."
   ],
   "advertencias_seguridad": [
-    "Los frenos son un sistema crítico: si no tienes experiencia, el cambio de pastillas debe hacerlo un mecánico.",
+    "Los frenos son un sistema crítico: si no tienes experiencia, el cambio de pastillas debe hacerlo tu mecánico de confianza.",
     "No toques los discos después de andar: pueden estar muy calientes."
   ],
-  "derivar_si": [
+  "acudir_al_mecanico_si": [
     "Ruido metálico al frenar (puede estar rozando metal con metal).",
     "El pedal o la manilla se sienten esponjosos o se van al fondo.",
     "El vehículo se tira hacia un lado al frenar.",

@@ -11,11 +11,14 @@ def elegir(texto: str, candidatos: list[dict]) -> list[dict]:
     return elegidos
 
 
-def derivacion(motivos: list[str]) -> str:
-    return (f"Esto es un tema de seguridad ({', '.join(motivos).lower()}). "
-            "No te voy a dar pasos para repararlo tú: no uses el vehículo y llévalo a un mecánico "
+CIERRE = "¿Tienes alguna otra duda? Aquí estoy para ayudarte."
+
+
+def recomendacion_mecanico(motivos: list[str]) -> str:
+    return (f"Esto es un tema de seguridad ({', '.join(motivos).lower()}), así que no te voy a dar pasos "
+            "para repararlo tú. Lo mejor es que no uses el vehículo y acudas a tu mecánico de confianza "
             "(si no es seguro moverlo, pide una grúa o asistencia en ruta). "
-            "Cuéntale cuándo empezó, en qué condiciones pasa y cualquier ruido u olor.")
+            "Cuéntale cuándo empezó, en qué condiciones pasa y si notas algún ruido u olor.")
 
 
 def _lista(items: list[str]) -> str:
@@ -35,7 +38,7 @@ def formatear(p: dict, v: dict, ultimo_cambio: dict | None = None) -> str:
         a = v.get("aceite_motor", {})
         if not a.get("viscosidad"):
             partes.append(f"No tengo datos de aceite cargados para la {nombre}. Revisa el manual de servicio "
-                          "o consulta a un mecánico; no te voy a dar un dato inventado.")
+                          "o consulta a tu mecánico de confianza; no te voy a dar un dato inventado.")
             return "\n\n".join(partes)
         lineas = [f"- Aceite: {a['viscosidad']}, {a['norma']}"]
         con, sin = a.get("capacidad_con_filtro_l"), a.get("capacidad_sin_filtro_l")
@@ -70,7 +73,8 @@ def formatear(p: dict, v: dict, ultimo_cambio: dict | None = None) -> str:
         recordatorios = [r for r in recordatorios if "embrague húmedo" not in r]
     partes.append("**No olvides**\n" + _lista(recordatorios))
     partes.append("**Seguridad**\n" + _lista(p["advertencias_seguridad"]))
-    partes.append("**Ve al mecánico si**\n" + _lista(p["derivar_si"]))
+    partes.append("**Acude a tu mecánico de confianza si**\n" + _lista(p["acudir_al_mecanico_si"]))
+    partes.append(CIERRE)
     return "\n\n".join(partes)
 
 
@@ -85,7 +89,7 @@ def registro_confirmado(v: dict, tipo: str, nombre: str, km: int | None) -> str:
         texto += f" a los {_km(km)}"
         if tipo == "cambio_aceite" and intervalo:
             texto += f". Te toca el próximo cerca de los {_km(km + intervalo)}"
-    return texto + "."
+    return f"{texto}. {CIERRE}"
 
 
 def pedir_vehiculo(candidatos: list[dict]) -> str:
@@ -98,5 +102,74 @@ def pedir_vehiculo(candidatos: list[dict]) -> str:
     return f"Hay más de un modelo que calza. ¿Cuál es el tuyo?\n{opciones}"
 
 
-SIN_PROCEDIMIENTO = ("En modo demo puedo ayudarte con: cambio de aceite, revisión de pastillas de freno "
-                     "y presión de neumáticos. ¿Cuál necesitas y para qué vehículo?")
+CAPACIDADES = ("- Cambio de aceite, revisión de pastillas de freno y presión de neumáticos, paso a paso\n"
+               "- Cada cuánto se hace cada mantención y cuánto demora (bujías, balatas, filtro de aire, "
+               "correa de distribución, cadena y más)\n"
+               "- Cuánto rinde el estanque de tu auto o moto\n"
+               "- Anotar las mantenciones que hagas para recordarte la próxima")
+
+SIN_PROCEDIMIENTO = ("No estoy seguro de haber entendido tu pregunta. Puedo ayudarte con:\n"
+                     + CAPACIDADES + "\n\nCuéntame qué necesitas y para qué vehículo.")
+
+
+def conversacion(tipo: str, vehiculo: dict | None) -> str:
+    """Respuestas cordiales a saludos, agradecimientos y despedidas."""
+    nombre = f" con tu {vehiculo['marca']} {vehiculo['modelo']}" if vehiculo else ""
+    if tipo == "gracias":
+        return (f"¡No hay de qué! Estoy aquí para ayudarte. Si tienes alguna otra duda{nombre} "
+                "o con otro vehículo, escríbeme cuando quieras.")
+    if tipo == "despedida":
+        return "¡Que te vaya muy bien! Maneja con cuidado y aquí estaré cuando me necesites."
+    return ("¡Hola! Soy MecaIA, tu asistente para la mantención de autos y motos. Puedo ayudarte con:\n"
+            + CAPACIDADES + "\n\n¿En qué te ayudo hoy?")
+
+
+def mantenimiento(items: list[dict], tipo: str | None, vehiculo: dict | None, fuente: str) -> str:
+    """Cada cuánto se hace cada mantención y cuánto demora."""
+    tipos = [tipo] if tipo else ["auto", "moto"]
+    para = f" para tu {vehiculo['marca']} {vehiculo['modelo']}" if vehiculo else ""
+    titulo = "Cada cuánto se hace cada mantención" if len(items) > 1 else f"Cada cuánto: {items[0]['nombre']}"
+    partes = [f"**{titulo}{para}**"]
+    for item in items:
+        lineas = []
+        for t in tipos:
+            dato = item.get(t)
+            etiqueta = "" if len(tipos) == 1 else f" ({'autos' if t == 'auto' else 'motos'})"
+            if dato is None:
+                if len(items) == 1:
+                    lineas.append(f"- No aplica{etiqueta}: {'las motos usan cadena' if t == 'moto' else 'los autos no llevan'}.")
+                continue
+            lineas.append(f"- Cada cuánto{etiqueta}: {dato['intervalo']}")
+            lineas.append(f"- Tiempo de trabajo{etiqueta}: {dato['tiempo_trabajo']}")
+        if not lineas:
+            continue
+        propio = (vehiculo or {}).get("aceite_motor", {}).get("intervalo_km")
+        if item["id"] == "aceite" and propio:
+            lineas.insert(0, f"- Para tu {vehiculo['modelo']}: cada {_km(propio)} aprox. (por confirmar con el manual)")
+        if item.get("nota") and len(items) == 1:
+            lineas.append(f"- Nota: {item['nota']}")
+        partes.append((f"**{item['nombre']}**\n" if len(items) > 1 else "") + "\n".join(lineas))
+    partes.append(f"_{fuente}._")
+    partes.append(CIERRE)
+    return "\n\n".join(partes)
+
+
+def estanque(v: dict) -> str:
+    nombre = f"{v['marca']} {v['modelo']}"
+    c = v.get("combustible", {})
+    if not c.get("estanque_l"):
+        return (f"No tengo cargada la capacidad del estanque de la {nombre}. Revisa el manual del propietario; "
+                f"no te voy a dar un dato inventado. {CIERRE}")
+    lineas = [f"- Capacidad del estanque: {c['estanque_l']} L"]
+    if c.get("rendimiento_km_l"):
+        autonomia = round(c["estanque_l"] * c["rendimiento_km_l"], -1)
+        lineas.append(f"- Rendimiento aproximado: {c['rendimiento_km_l']} km por litro")
+        lineas.append(f"- Autonomía estimada con el estanque lleno: unos {_km(int(autonomia))}")
+    return "\n\n".join([
+        f"**Estanque de tu {nombre}**",
+        "\n".join(lineas),
+        "El rendimiento real cambia según cómo manejes, la carga, el tráfico y la mantención. "
+        "Para no quedarte en pana, carga cuando se encienda la luz de reserva.",
+        f"_Datos por confirmar con el manual. Fuente: {c['fuente']}._",
+        CIERRE,
+    ])

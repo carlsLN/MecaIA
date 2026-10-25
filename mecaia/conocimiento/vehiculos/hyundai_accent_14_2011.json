@@ -37,5 +37,11 @@
     "tapon_carter_mm": 17,
     "fuente": "Valor de referencia, por contrastar con el manual del propietario",
     "verificado": false
+  },
+  "combustible": {
+    "estanque_l": 43,
+    "rendimiento_km_l": 14,
+    "fuente": "Valor de referencia (rendimiento mixto aproximado), por contrastar con el manual",
+    "verificado": false
   }
 }

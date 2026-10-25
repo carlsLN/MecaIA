@@ -38,6 +38,11 @@ class Herramientas:
     def buscar_procedimiento(self, consulta: str) -> dict:
         return bc.buscar_procedimiento(consulta) or {"error": "No hay un procedimiento cargado para eso"}
 
+    def consultar_mantenimiento_periodico(self, consulta: str) -> dict:
+        base = bc.mantenimiento_periodico()
+        items = bc.buscar_mantenimiento(consulta) or base["items"]
+        return {"items": items, "fuente": base["fuente"], "verificado": base["verificado"]}
+
     def mis_vehiculos(self) -> dict:
         return {"vehiculos": self.memoria.vehiculos(self.usuario)}
 
@@ -53,7 +58,7 @@ class Herramientas:
         self.memoria.registrar_mantencion(self.usuario, vehiculo_id, tipo, km, notas)
         return {"ok": True}
 
-    def derivar_a_mecanico(self, motivo: str, urgencia: str) -> dict:
+    def recomendar_mecanico(self, motivo: str, urgencia: str) -> dict:
         consejo = {
             "inmediata": "No uses el vehículo. Si es seguro, llama a una grúa o asistencia en ruta.",
             "pronto": "Úsalo lo mínimo y con precaución hasta que lo revisen, idealmente esta semana.",
@@ -62,6 +67,7 @@ class Herramientas:
         return {
             "motivo": motivo,
             "que_hacer": consejo,
+            "recomendacion": "Acude a tu mecánico de confianza.",
             "que_decirle_al_mecanico": "Describe cuándo empezó, en qué condiciones ocurre "
                                        "(frío/caliente, al frenar, a cierta velocidad) y cualquier ruido u olor.",
         }

@@ -105,10 +105,74 @@ def test_no_inventa_datos(memoria):
     assert "no te voy a dar un dato inventado" in respuesta
 
 
-def test_deriva_en_riesgo(memoria):
+def test_riesgo_recomienda_mecanico_de_confianza(memoria):
     agente = MecaIA("ana", memoria)
-    assert "mecánico" in agente.responder("mi moto no frena, ¿qué hago?")
-    assert agente.ultimo_plan[-1].startswith("Decisión: derivar")
+    assert "mecánico de confianza" in agente.responder("mi moto no frena, ¿qué hago?")
+    assert agente.ultimo_plan[-1].startswith("Decisión: recomendar acudir al mecánico de confianza")
+
+
+def test_responde_cordial_a_gracias(memoria):
+    agente = MecaIA("ana", memoria)
+    agente.responder("aceite para mi ninja 400")
+    respuesta = agente.responder("muchas gracias!")
+    assert respuesta.startswith("¡No hay de qué! Estoy aquí para ayudarte")
+    assert "Ninja 400" in respuesta and "otra duda" in respuesta
+
+
+@pytest.mark.parametrize("texto, inicio", [("hola", "¡Hola! Soy MecaIA"), ("chao", "¡Que te vaya muy bien!")])
+def test_saludo_y_despedida(memoria, texto, inicio):
+    assert MecaIA("ana", memoria).responder(texto).startswith(inicio)
+
+
+def test_las_respuestas_invitan_a_seguir_preguntando(memoria):
+    assert MecaIA("ana", memoria).responder("aceite para mi yaris").endswith("Aquí estoy para ayudarte.")
+
+
+def test_estanque_y_autonomia(memoria):
+    respuesta = MecaIA("ana", memoria).responder("cuánto rinde el estanque de mi Yamaha R3?")
+    assert "14 L" in respuesta and "350 km" in respuesta
+
+
+def test_estanque_pregunta_el_vehiculo_si_falta(memoria):
+    agente = MecaIA("ana", memoria)
+    assert "¿Para qué vehículo es?" in agente.responder("cuántos km hace un estanque lleno?")
+    assert "43 L" in agente.responder("hyundai accent")
+
+
+def test_estanque_sin_dato_no_inventa(memoria):
+    assert "no te voy a dar un dato inventado" in MecaIA("ana", memoria).responder("estanque de la kz400")
+
+
+def test_intervalo_bujias_auto(memoria):
+    respuesta = MecaIA("ana", memoria).responder("cada cuánto se cambian las bujías de un auto?")
+    assert "Bujías" in respuesta and "20.000 a 30.000 km" in respuesta and "motos" not in respuesta
+
+
+def test_intervalo_balatas_usa_tipo_del_vehiculo(memoria):
+    agente = MecaIA("ana", memoria)
+    agente.responder("aceite para mi gixxer 150")
+    respuesta = agente.responder("cada cuánto cambio las balatas?")
+    assert "10.000 y 20.000 km" in respuesta and "Gixxer 150" in respuesta
+
+
+def test_intervalo_correa_no_aplica_a_moto(memoria):
+    respuesta = MecaIA("ana", memoria).responder("cada cuánto se cambia la correa de distribución de una moto?")
+    assert "No aplica" in respuesta
+
+
+def test_intervalo_aceite_incluye_dato_del_modelo(memoria):
+    respuesta = MecaIA("ana", memoria).responder("cada cuantos km cambio el aceite de mi ninja 400")
+    assert "6.000 km" in respuesta
+
+
+def test_cuanto_demora_una_mantencion(memoria):
+    respuesta = MecaIA("ana", memoria).responder("cuánto demora cambiar el filtro de aire de una moto")
+    assert "20 a 40 minutos" in respuesta
+
+
+def test_tabla_general_de_mantenciones(memoria):
+    respuesta = MecaIA("ana", memoria).responder("cada cuánto hay que hacer las mantenciones de un auto")
+    assert "Bujías" in respuesta and "Correa de distribución" in respuesta and "Cadena" not in respuesta
 
 
 class LLMFalso:
@@ -136,10 +200,10 @@ def test_modo_claude_usa_herramientas(memoria):
     resultado_herramienta = llm.llamadas[1][-1]
     assert resultado_herramienta.type == "tool" and "10W-40" in resultado_herramienta.content
     assert "vehiculo_confirmado=kawasaki_ninja_400_2018" in llm.llamadas[0][0].content
-    assert "registrar_mantencion" in llm.herramientas
+    assert {"registrar_mantencion", "consultar_mantenimiento_periodico"} <= set(llm.herramientas)
 
 
 def test_modo_claude_respeta_seguridad_en_codigo(memoria):
     llm = LLMFalso()
-    assert "mecánico" in MecaIA("ana", memoria, llm).responder("siento olor a bencina")
+    assert "mecánico de confianza" in MecaIA("ana", memoria, llm).responder("siento olor a bencina")
     assert llm.llamadas == []  # el riesgo se resuelve antes de llamar al modelo

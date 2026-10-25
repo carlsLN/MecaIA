@@ -58,3 +58,15 @@ def buscar_procedimiento(consulta: str) -> dict | None:
 
 def obtener_procedimiento(procedimiento_id: str) -> dict | None:
     return procedimientos().get(procedimiento_id)
+
+
+@lru_cache
+def mantenimiento_periodico() -> dict:
+    return json.loads((CARPETA / "mantenimiento_periodico.json").read_text(encoding="utf-8"))
+
+
+def buscar_mantenimiento(consulta: str) -> list[dict]:
+    """Ítems de mantención periódica mencionados en la consulta (bujías, balatas, etc.)."""
+    texto = normalizar(consulta)
+    return [i for i in mantenimiento_periodico()["items"]
+            if any(re.search(rf"\b{re.escape(normalizar(k))}", texto) for k in i["palabras_clave"])]

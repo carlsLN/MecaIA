@@ -2,12 +2,16 @@
 
 Flujo de cada mensaje:
 
-    seguridad ──riesgo──> derivar
+    seguridad ──riesgo──> recomendar_mecanico (acudir al mecánico de confianza)
         │
-    interpretar ──varios modelos o falta el vehículo──> aclarar
+    interpretar ──saludo, gracias o despedida──> conversar
+        │        ──varios modelos o falta el vehículo──> aclarar
         │        ──el usuario cuenta una mantención──> registrar
         │
     responder (modo demo)   o   agente <──> herramientas (modo Claude)
+
+Intenciones que reconoce: consulta de un procedimiento, cada cuánto se hace una mantención
+(intervalo), capacidad y rendimiento del estanque, registro de una mantención y conversación.
 
 Memoria de corto plazo: el checkpointer de LangGraph guarda el estado de cada conversación
 (mensajes, vehículo confirmado, pregunta pendiente). Memoria de largo plazo: la base SQLite de
@@ -36,8 +40,8 @@ PROMPT_SISTEMA = """Eres MecaIA, un asistente de mantención para personas dueñ
 (no para talleres). Respondes en español, claro y cercano, como un amigo que sabe de mecánica.
 
 Reglas, en este orden de prioridad:
-1. Seguridad primero. Si hay un riesgo, no des pasos para reparar: explica por qué es peligroso y usa \
-derivar_a_mecanico.
+1. Seguridad primero. Si hay un riesgo, no des pasos para reparar: explica por qué es peligroso, usa \
+recomendar_mecanico y sugiere acudir a su mecánico de confianza.
 2. Usa el vehículo confirmado que aparece en el contexto. Si no hay uno, identifícalo con buscar_vehiculo \
 o mis_vehiculos; si hay más de un candidato, pregunta cuál es y no adivines.
 3. Nunca inventes datos técnicos. Viscosidad, capacidades, códigos de repuesto, torques y medidas salen \
@@ -45,16 +49,22 @@ solo de obtener_datos_vehiculo. Si un dato es null o no está, dilo y sugiere el
 "verificado": false, menciónalo brevemente ("dato por confirmar con tu manual").
 4. Para tareas de mantención usa buscar_procedimiento y responde con estas secciones: Lo que necesitas, \
 Herramientas, Si no tienes las herramientas, Paso a paso, No olvides (p. ej. cambiar el filtro con el \
-aceite), Cuándo ir al mecánico.
-5. Si el usuario cuenta que hizo una mantención, regístrala con registrar_mantencion.
-6. Si la pregunta no es de mecánica de autos o motos, dilo amablemente."""
+aceite), Cuándo acudir a tu mecánico de confianza.
+5. Para preguntas de cada cuánto se hace una mantención o cuánto demora (bujías, balatas, filtro de aire, \
+correa de distribución, etc.) usa consultar_mantenimiento_periodico. Para el estanque y la autonomía usa \
+el campo combustible de obtener_datos_vehiculo y aclara que el rendimiento real varía.
+6. Si el usuario cuenta que hizo una mantención, regístrala con registrar_mantencion.
+7. Sé cordial: si el usuario agradece, saluda o se despide, responde con calidez y ofrécele seguir \
+ayudando. Termina tus respuestas invitándolo a preguntar si tiene otra duda.
+8. Si la pregunta no es de mecánica de autos o motos, dilo amablemente."""
 
 
 class Estado(TypedDict, total=False):
     messages: Annotated[list[AnyMessage], add_messages]
     usuario: str
     seguridad: dict
-    intencion: str  # "consulta" o "registro"
+    intencion: str  # consulta, intervalo, estanque, registro o conversacion
+    conversacion: str | None  # saludo, gracias o despedida
     procedimiento_id: str | None
     candidatos: list[str]
     vehiculo_id: str | None
@@ -69,6 +79,34 @@ def _ultimo_texto(estado: Estado) -> str:
 
 def _es_registro(texto: str) -> bool:
     return bool(re.search(r"\b(ya )?(cambie|hice|realice|le hice|le cambie)\b", texto))
+
+
+def _es_intervalo(texto: str) -> bool:
+    return bool(re.search(r"cada cuant|cuando (se |hay que |debo |toca )?(cambi|revis|hacer)|cuanto (tiempo )?"
+                          r"(dura|demora|se demora|tarda)|vida util|frecuencia|intervalo", texto))
+
+
+def _es_estanque(texto: str) -> bool:
+    return bool(re.search(r"estanque|tanque|autonomia|\brinde\b|rendimiento|consumo|litros de (bencina|gasolina)"
+                          r"|km por litro", texto))
+
+
+def _conversacion(texto: str) -> str | None:
+    if re.search(r"\b(gracias|te pasaste|genial|excelente|perfecto|buenisimo|de lujo)\b", texto):
+        return "gracias"
+    if re.search(r"\b(chao|adios|hasta luego|nos vemos|hasta pronto)\b", texto):
+        return "despedida"
+    if re.search(r"^(hola|buenas|buenos dias|buen dia|hey)\b", texto):
+        return "saludo"
+    return None
+
+
+def _tipo_mencionado(texto: str) -> str | None:
+    if re.search(r"\b(moto|motos|motocicleta)\b", texto):
+        return "moto"
+    if re.search(r"\b(auto|autos|carro|carros|coche|camioneta)\b", texto):
+        return "auto"
+    return None
 
 
 def _km(texto: str) -> int | None:
@@ -99,8 +137,13 @@ def crear_herramientas(memoria: Memoria) -> list:
 
     @tool
     def buscar_procedimiento(consulta: str, estado: Annotated[dict, InjectedState]) -> str:
-        """Procedimiento de mantención: pasos, herramientas, alternativas, recordatorios y cuándo derivar."""
+        """Procedimiento de mantención: pasos, herramientas, alternativas, recordatorios y cuándo acudir al mecánico."""
         return h(estado).ejecutar("buscar_procedimiento", {"consulta": consulta})
+
+    @tool
+    def consultar_mantenimiento_periodico(consulta: str, estado: Annotated[dict, InjectedState]) -> str:
+        """Cada cuánto se hace una mantención y cuánto demora (bujías, balatas, filtro de aire, etc.)."""
+        return h(estado).ejecutar("consultar_mantenimiento_periodico", {"consulta": consulta})
 
     @tool
     def mis_vehiculos(estado: Annotated[dict, InjectedState]) -> str:
@@ -122,12 +165,14 @@ def crear_herramientas(memoria: Memoria) -> list:
                                   {"vehiculo_id": vehiculo_id, "tipo": tipo, "km": km, "notas": notas})
 
     @tool
-    def derivar_a_mecanico(motivo: str, urgencia: str, estado: Annotated[dict, InjectedState]) -> str:
-        """Deriva a un mecánico cuando el caso excede lo seguro. urgencia: inmediata, pronto o cuando_pueda."""
-        return h(estado).ejecutar("derivar_a_mecanico", {"motivo": motivo, "urgencia": urgencia})
+    def recomendar_mecanico(motivo: str, urgencia: str, estado: Annotated[dict, InjectedState]) -> str:
+        """Recomienda acudir al mecánico de confianza cuando el caso excede lo seguro.
+
+        urgencia: inmediata, pronto o cuando_pueda."""
+        return h(estado).ejecutar("recomendar_mecanico", {"motivo": motivo, "urgencia": urgencia})
 
     return [revisar_seguridad, buscar_vehiculo, obtener_datos_vehiculo, buscar_procedimiento,
-            mis_vehiculos, guardar_vehiculo, registrar_mantencion, derivar_a_mecanico]
+            consultar_mantenimiento_periodico, mis_vehiculos, guardar_vehiculo, registrar_mantencion, recomendar_mecanico]
 
 
 def construir_grafo(memoria: Memoria, llm=None, checkpointer=None):
@@ -145,11 +190,25 @@ def construir_grafo(memoria: Memoria, llm=None, checkpointer=None):
         pendiente = estado.get("pendiente", False)
 
         procedimiento = bc.buscar_procedimiento(texto)
-        intencion = "registro" if _es_registro(texto) else "consulta"
+        items = bc.buscar_mantenimiento(texto)
+        if _es_registro(texto):
+            intencion = "registro"
+        elif _es_estanque(texto):
+            intencion = "estanque"
+        elif _es_intervalo(texto):
+            intencion = "intervalo"
+        else:
+            intencion = "consulta"
         if pendiente:
             procedimiento = procedimiento or bc.obtener_procedimiento(estado.get("procedimiento_id") or "")
-            if estado.get("intencion") == "registro":
-                intencion = "registro"
+            if intencion == "consulta" and estado.get("intencion") in ("registro", "estanque", "intervalo"):
+                intencion = estado["intencion"]
+        charla = None
+        if (intencion == "consulta" and not procedimiento and not items
+                and not bc.buscar_vehiculo(texto)):
+            charla = _conversacion(texto)
+            if charla:
+                intencion = "conversacion"
         km = _km(texto) or (estado.get("km") if pendiente else None)
 
         candidatos = bc.buscar_vehiculo(texto)
@@ -172,9 +231,15 @@ def construir_grafo(memoria: Memoria, llm=None, checkpointer=None):
             plan.append(f"Vehículo: {vehiculo_id}, {origen}")
         else:
             plan.append(f"Vehículo: {len(candidatos)} candidatos")
-        plan.append(f"Intención: {intencion}; procedimiento: {procedimiento['id'] if procedimiento else 'ninguno'}")
+        if intencion == "intervalo":
+            plan.append(f"Intención: intervalo; ítems: {', '.join(i['id'] for i in items) or 'todos'}")
+        elif intencion == "conversacion":
+            plan.append(f"Intención: conversación ({charla})")
+        else:
+            plan.append(f"Intención: {intencion}; procedimiento: {procedimiento['id'] if procedimiento else 'ninguno'}")
         return {
             "intencion": intencion,
+            "conversacion": charla,
             "procedimiento_id": procedimiento["id"] if procedimiento else None,
             "candidatos": [v["id"] for v in candidatos],
             "vehiculo_id": vehiculo_id,
@@ -184,24 +249,34 @@ def construir_grafo(memoria: Memoria, llm=None, checkpointer=None):
         }
 
     def ruta_interpretar(estado: Estado) -> str:
-        if len(estado["candidatos"]) > 1:
+        intencion = estado["intencion"]
+        if intencion == "conversacion":
+            return "conversar"
+        if len(estado["candidatos"]) > 1 and intencion != "intervalo":
             return "aclarar"
-        if estado["intencion"] == "registro":
-            return "registrar" if estado["vehiculo_id"] else "aclarar"
+        if intencion in ("registro", "estanque") and not estado["vehiculo_id"]:
+            return "aclarar"
+        if intencion == "registro":
+            return "registrar"
         if llm is not None:
             return "agente"
-        if estado["procedimiento_id"] and not estado["vehiculo_id"]:
+        if intencion == "consulta" and estado["procedimiento_id"] and not estado["vehiculo_id"]:
             return "aclarar"
         return "responder"
+
+    def nodo_conversar(estado: Estado) -> dict:
+        v = bc.obtener_vehiculo(estado["vehiculo_id"] or "")
+        return {"messages": [AIMessage(respuestas.conversacion(estado["conversacion"], v))],
+                "plan": estado["plan"] + ["Decisión: responder con cordialidad y ofrecer más ayuda"]}
 
     def nodo_aclarar(estado: Estado) -> dict:
         candidatos = [bc.obtener_vehiculo(i) for i in estado["candidatos"]]
         return {"messages": [AIMessage(respuestas.pedir_vehiculo(candidatos))], "pendiente": True,
                 "plan": estado["plan"] + ["Decisión: preguntar antes de dar datos"]}
 
-    def nodo_derivar(estado: Estado) -> dict:
-        return {"messages": [AIMessage(respuestas.derivacion(estado["seguridad"]["motivos"]))],
-                "plan": estado["plan"] + ["Decisión: derivar a mecánico, sin pasos de reparación"]}
+    def nodo_recomendar_mecanico(estado: Estado) -> dict:
+        return {"messages": [AIMessage(respuestas.recomendacion_mecanico(estado["seguridad"]["motivos"]))],
+                "plan": estado["plan"] + ["Decisión: recomendar acudir al mecánico de confianza, sin pasos de reparación"]}
 
     def nodo_registrar(estado: Estado) -> dict:
         tipo = estado["procedimiento_id"] or "mantencion"
@@ -214,10 +289,20 @@ def construir_grafo(memoria: Memoria, llm=None, checkpointer=None):
 
     def nodo_responder(estado: Estado) -> dict:
         procedimiento = bc.obtener_procedimiento(estado["procedimiento_id"] or "")
+        v = bc.obtener_vehiculo(estado["vehiculo_id"] or "")
+        if estado["intencion"] == "estanque":
+            return {"messages": [AIMessage(respuestas.estanque(v))],
+                    "plan": estado["plan"] + ["Decisión: responder con el estanque y la autonomía estimada"]}
+        if estado["intencion"] == "intervalo":
+            base = bc.mantenimiento_periodico()
+            texto = normalizar(_ultimo_texto(estado))
+            items = bc.buscar_mantenimiento(texto) or base["items"]
+            tipo = v["tipo"] if v else _tipo_mencionado(texto)
+            return {"messages": [AIMessage(respuestas.mantenimiento(items, tipo, v, base["fuente"]))],
+                    "plan": estado["plan"] + ["Decisión: responder con intervalos de mantención"]}
         if procedimiento is None:
             texto = respuestas.SIN_PROCEDIMIENTO
         else:
-            v = bc.obtener_vehiculo(estado["vehiculo_id"])
             texto = respuestas.formatear(procedimiento, v, _ultimo_cambio(estado))
             if estado["seguridad"]["nivel"] == "precaucion":
                 texto = f"Ojo: {', '.join(estado['seguridad']['motivos']).lower()}. Ve con cuidado.\n\n{texto}"
@@ -243,13 +328,14 @@ def construir_grafo(memoria: Memoria, llm=None, checkpointer=None):
     g.add_node("seguridad", nodo_seguridad)
     g.add_node("interpretar", nodo_interpretar)
     g.add_node("aclarar", nodo_aclarar)
-    g.add_node("derivar", nodo_derivar)
+    g.add_node("conversar", nodo_conversar)
+    g.add_node("recomendar_mecanico", nodo_recomendar_mecanico)
     g.add_node("registrar", nodo_registrar)
     g.add_node("responder", nodo_responder)
     g.add_edge(START, "seguridad")
-    g.add_conditional_edges("seguridad", lambda e: "derivar" if e["seguridad"]["nivel"] == "detener"
-                            else "interpretar", ["derivar", "interpretar"])
-    destinos = ["aclarar", "registrar", "responder"]
+    g.add_conditional_edges("seguridad", lambda e: "recomendar_mecanico" if e["seguridad"]["nivel"] == "detener"
+                            else "interpretar", ["recomendar_mecanico", "interpretar"])
+    destinos = ["aclarar", "conversar", "registrar", "responder"]
     if llm is not None:
         g.add_node("agente", nodo_agente)
         g.add_node("herramientas", ToolNode(herramientas))
@@ -257,7 +343,7 @@ def construir_grafo(memoria: Memoria, llm=None, checkpointer=None):
         g.add_edge("herramientas", "agente")
         destinos.append("agente")
     g.add_conditional_edges("interpretar", ruta_interpretar, destinos)
-    for nodo in ("aclarar", "derivar", "registrar", "responder"):
+    for nodo in ("aclarar", "conversar", "recomendar_mecanico", "registrar", "responder"):
         g.add_edge(nodo, END)
     return g.compile(checkpointer=checkpointer or InMemorySaver())
 

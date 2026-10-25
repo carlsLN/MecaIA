@@ -12,6 +12,7 @@ from mecaia.grafo import MecaIA  # noqa: E402
 from mecaia.memoria import Memoria  # noqa: E402
 
 GUION = [
+    ("principal", "hola"),
     ("principal", "¿Qué aceite necesito para mi Kawasaki 400?"),
     ("principal", "la ninja"),
     ("principal", "ya cambié el aceite a los 12.000 km"),
@@ -19,6 +20,10 @@ GUION = [
     ("principal", "mi moto no frena, ¿qué hago?"),
     ("otra", "cambio de aceite"),
     ("otra", "qué aceite lleva un Suzuki Alto"),
+    ("otra", "cuánto rinde el estanque de mi Yamaha R3"),
+    ("otra", "cada cuánto se cambian las bujías de un auto"),
+    ("otra", "cada cuánto cambio las balatas de mi moto"),
+    ("otra", "muchas gracias"),
 ]
 
 

@@ -40,5 +40,11 @@
     "fuente": "Valor de referencia, por contrastar con el manual del propietario",
     "verificado": false
   },
-  "notas": "Además del filtro tiene mallas de aceite que se limpian en la mantención; revisar el manual KTM."
+  "notas": "Además del filtro tiene mallas de aceite que se limpian en la mantención; revisar el manual KTM.",
+  "combustible": {
+    "estanque_l": 10,
+    "rendimiento_km_l": 30,
+    "fuente": "Valor de referencia (rendimiento mixto aproximado), por contrastar con el manual",
+    "verificado": false
+  }
 }
