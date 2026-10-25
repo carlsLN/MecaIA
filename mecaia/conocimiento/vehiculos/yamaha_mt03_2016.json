@@ -1,0 +1,42 @@
+{
+  "id": "yamaha_mt03_2016",
+  "tipo": "moto",
+  "marca": "Yamaha",
+  "modelo": "MT-03",
+  "anios": [
+    2016,
+    2024
+  ],
+  "alias": [
+    "mt-03",
+    "mt03",
+    "mt 03"
+  ],
+  "motor": "321 cc, 2 cilindros en línea, refrigeración líquida (mismo motor que la R3)",
+  "aceite_motor": {
+    "viscosidad": "SAE 10W-40",
+    "norma": "API SG o superior, JASO MA o MA2 (aceite para motos con embrague húmedo)",
+    "capacidad_con_filtro_l": 2.1,
+    "capacidad_sin_filtro_l": 1.8,
+    "intervalo_km": 5000,
+    "fuente": "Valor de referencia, por contrastar con el manual del propietario",
+    "verificado": false
+  },
+  "filtro_aceite": {
+    "codigo_original": "Yamaha 1WD-E3440-00",
+    "equivalentes": [],
+    "fuente": "Valor de referencia, por contrastar con el manual del propietario",
+    "verificado": false
+  },
+  "torques_nm": {
+    "tapon_carter": null,
+    "filtro_aceite": null,
+    "fuente": "Valor de referencia, por contrastar con el manual del propietario",
+    "verificado": false
+  },
+  "medidas_herramientas": {
+    "tapon_carter_mm": null,
+    "fuente": "Valor de referencia, por contrastar con el manual del propietario",
+    "verificado": false
+  }
+}

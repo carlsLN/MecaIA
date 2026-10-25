@@ -1,0 +1,29 @@
+{
+  "id": "presion_neumaticos",
+  "nombre": "Revisión de presión de neumáticos",
+  "palabras_clave": ["neumatico", "neumaticos", "neumático", "neumáticos", "rueda", "ruedas", "presion", "presión", "llanta", "goma"],
+  "aplica_a": ["moto", "auto"],
+  "dificultad": "baja",
+  "tiempo_estimado_min": 10,
+  "herramientas": ["Manómetro de presión", "Compresor o inflador"],
+  "alternativas_sin_herramientas": [
+    "Casi todas las bencineras tienen inflador con manómetro, muchas veces gratis."
+  ],
+  "pasos": [
+    "Revisa con los neumáticos fríos (antes de andar o tras 3 horas detenido).",
+    "Busca la presión correcta en la etiqueta del vehículo (marco de la puerta, tapa de combustible o basculante en motos) o en el manual.",
+    "Mide cada neumático y ajusta a la presión indicada.",
+    "Revisa también desgaste, cortes o deformaciones."
+  ],
+  "recordatorios": [
+    "La presión indicada en el costado del neumático es la máxima, no la recomendada.",
+    "Revisa la presión al menos una vez al mes y antes de un viaje largo."
+  ],
+  "advertencias_seguridad": [
+    "No conduzcas con un neumático con corte, globo o tela a la vista."
+  ],
+  "derivar_si": [
+    "El neumático pierde aire de forma repetida.",
+    "Hay un globo, corte en el costado o desgaste irregular marcado."
+  ]
+}

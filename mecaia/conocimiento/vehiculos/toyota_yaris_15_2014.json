@@ -1,0 +1,35 @@
+{
+  "id": "toyota_yaris_15_2014",
+  "tipo": "auto",
+  "marca": "Toyota",
+  "modelo": "Yaris 1.5",
+  "anios": [2014, 2019],
+  "alias": ["yaris", "yaris 1.5", "toyota yaris"],
+  "motor": "1.5 L bencinero, 4 cilindros",
+  "aceite_motor": {
+    "viscosidad": "SAE 5W-30 (o 0W-20 según mercado y manual)",
+    "norma": "API SN o superior / ILSAC GF-5",
+    "capacidad_con_filtro_l": 3.7,
+    "capacidad_sin_filtro_l": 3.4,
+    "intervalo_km": 10000,
+    "fuente": "Manual del propietario Toyota Yaris",
+    "verificado": false
+  },
+  "filtro_aceite": {
+    "codigo_original": "Toyota 90915-YZZE2",
+    "equivalentes": [],
+    "fuente": "Catálogo de repuestos Toyota",
+    "verificado": false
+  },
+  "torques_nm": {
+    "tapon_carter": 37,
+    "filtro_aceite": null,
+    "fuente": "Manual de servicio Toyota",
+    "verificado": false
+  },
+  "medidas_herramientas": {
+    "tapon_carter_mm": 14,
+    "fuente": "Por confirmar en el manual de servicio",
+    "verificado": false
+  }
+}

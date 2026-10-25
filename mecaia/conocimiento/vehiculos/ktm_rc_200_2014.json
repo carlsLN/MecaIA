@@ -1,0 +1,44 @@
+{
+  "id": "ktm_rc_200_2014",
+  "tipo": "moto",
+  "marca": "KTM",
+  "modelo": "RC 200",
+  "anios": [
+    2014,
+    2024
+  ],
+  "alias": [
+    "rc 200",
+    "rc200",
+    "rc-200",
+    "ktm rc"
+  ],
+  "motor": "199 cc, 1 cilindro, refrigeración líquida",
+  "aceite_motor": {
+    "viscosidad": "SAE 10W-50",
+    "norma": "Sintético, JASO MA o MA2 (aceite para motos con embrague húmedo)",
+    "capacidad_con_filtro_l": 1.5,
+    "capacidad_sin_filtro_l": null,
+    "intervalo_km": 7500,
+    "fuente": "Valor de referencia, por contrastar con el manual del propietario",
+    "verificado": false
+  },
+  "filtro_aceite": {
+    "codigo_original": null,
+    "equivalentes": [],
+    "fuente": "Valor de referencia, por contrastar con el manual del propietario",
+    "verificado": false
+  },
+  "torques_nm": {
+    "tapon_carter": null,
+    "filtro_aceite": null,
+    "fuente": "Valor de referencia, por contrastar con el manual del propietario",
+    "verificado": false
+  },
+  "medidas_herramientas": {
+    "tapon_carter_mm": null,
+    "fuente": "Valor de referencia, por contrastar con el manual del propietario",
+    "verificado": false
+  },
+  "notas": "Además del filtro tiene mallas de aceite que se limpian en la mantención; revisar el manual KTM."
+}

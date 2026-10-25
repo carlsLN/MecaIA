@@ -1,0 +1,50 @@
+{
+  "id": "cambio_aceite",
+  "nombre": "Cambio de aceite de motor",
+  "palabras_clave": ["aceite", "cambio de aceite", "lubricante", "filtro de aceite"],
+  "aplica_a": ["moto", "auto"],
+  "dificultad": "baja",
+  "tiempo_estimado_min": 45,
+  "herramientas": [
+    "Llave de copa o punta corona para el tapón del cárter (medida según el vehículo)",
+    "Llave para filtro de aceite (de cinta, cadena o copa)",
+    "Bandeja o recipiente para recibir el aceite usado (mínimo la capacidad del motor)",
+    "Embudo",
+    "Guantes y paños",
+    "Torquímetro (recomendado)"
+  ],
+  "alternativas_sin_herramientas": [
+    "Si no tienes llave de filtro: hay modelos económicos de cinta; muchas tiendas de repuestos las prestan o las venden por poco.",
+    "Si no tienes torquímetro: aprieta firme sin forzar y revisa que no gotee; nunca apretar en exceso porque se daña la rosca del cárter.",
+    "Si no tienes donde dejar el aceite usado o prefieres no hacerlo: compra el aceite y el filtro correctos y llévalos a un lubricentro; pide solo la mano de obra.",
+    "En moto, si no tienes atril central: pide ayuda para mantenerla vertical; con la moto inclinada en el atril lateral queda aceite sin drenar y la lectura del nivel es incorrecta."
+  ],
+  "pasos": [
+    "Calienta el motor 2 a 3 minutos (el aceite tibio drena mejor) y apágalo. No lo dejes muy caliente: puede quemar.",
+    "Pon el vehículo en superficie plana y firme; en moto, vertical o en atril central.",
+    "Coloca la bandeja bajo el tapón del cárter y retira el tapón de llenado de arriba para que drene más rápido.",
+    "Afloja y saca el tapón del cárter; deja drenar por completo (5 a 10 minutos).",
+    "Retira el filtro de aceite y deja drenar su alojamiento.",
+    "Unta con aceite nuevo la goma del filtro nuevo y atorníllalo a mano hasta que toque; luego aprieta según el torque indicado.",
+    "Instala el tapón del cárter con arandela nueva y apriétalo al torque indicado.",
+    "Llena con la cantidad indicada de aceite, de a poco, usando el embudo.",
+    "Enciende el motor 1 minuto, apágalo, espera 2 a 3 minutos y revisa el nivel en la mirilla o varilla. Completa si falta.",
+    "Revisa que no haya goteo en tapón ni filtro."
+  ],
+  "recordatorios": [
+    "Cambia también el filtro de aceite: aceite nuevo con filtro viejo se contamina rápido.",
+    "Usa una arandela (golilla) nueva en el tapón del cárter para evitar filtraciones.",
+    "En motos con embrague húmedo usa aceite JASO MA o MA2; un aceite de auto con aditivos de fricción puede hacer patinar el embrague.",
+    "Anota el kilometraje del cambio para saber cuándo toca el próximo.",
+    "Lleva el aceite usado a un punto de reciclaje; nunca lo botes al desagüe o a la tierra."
+  ],
+  "advertencias_seguridad": [
+    "El aceite y el escape pueden estar muy calientes: usa guantes.",
+    "Nunca te pongas bajo un auto sostenido solo por la gata: usa caballetes (torres) o rampas."
+  ],
+  "derivar_si": [
+    "La rosca del tapón está dañada o el tapón no aprieta.",
+    "El aceite drenado sale lechoso (posible mezcla con refrigerante), con partículas metálicas o con olor fuerte a combustible.",
+    "La luz de presión de aceite queda encendida después del cambio."
+  ]
+}

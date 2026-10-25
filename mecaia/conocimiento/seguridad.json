@@ -1,0 +1,22 @@
+{
+  "_nota": "Patrones en minúsculas y sin tildes: el texto del usuario se normaliza antes de comparar.",
+  "detener": [
+    {"patron": "fren\\w* no (responde|funciona|frena|anda)", "motivo": "Falla de frenos"},
+    {"patron": "no (frena|tengo frenos)", "motivo": "Falla de frenos"},
+    {"patron": "(pedal|manilla).*(al fondo|esponj)", "motivo": "Falla de frenos"},
+    {"patron": "liquido de frenos.*(fuga|bota|pierde|gotea)|(fuga|bota|pierde|gotea).*liquido de frenos", "motivo": "Posible fuga de líquido de frenos"},
+    {"patron": "olor a (bencina|gasolina|combustible|nafta)", "motivo": "Posible fuga de combustible"},
+    {"patron": "(fuga|bota|pierde|gotea)\\w* (de )?(bencina|gasolina|combustible|nafta)", "motivo": "Fuga de combustible"},
+    {"patron": "\\bhumo\\b|\\bfuego\\b|\\bincendi|\\bllamas?\\b", "motivo": "Humo o fuego"},
+    {"patron": "luz (de|del) aceite|presion de aceite", "motivo": "Testigo de presión de aceite"},
+    {"patron": "sobrecalent|temperatura (alta|al maximo|en rojo)|hierve", "motivo": "Sobrecalentamiento del motor"},
+    {"patron": "direccion (suelta|dura|bloqueada)|volante (suelto|bloqueado)", "motivo": "Falla de dirección"},
+    {"patron": "airbag", "motivo": "Sistema de airbag (manipularlo puede ser peligroso)"}
+  ],
+  "precaucion": [
+    {"patron": "ruido al frenar|chirr|rechin", "motivo": "Ruido en frenos"},
+    {"patron": "vibra", "motivo": "Vibraciones"},
+    {"patron": "check engine|luz del motor|testigo del motor", "motivo": "Testigo de motor encendido"},
+    {"patron": "bateria", "motivo": "Manipulación de batería (riesgo eléctrico y ácido)"}
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "id": "honda_cbr250r_2011",
+  "tipo": "moto",
+  "marca": "Honda",
+  "modelo": "CBR250R",
+  "anios": [
+    2011,
+    2013
+  ],
+  "alias": [
+    "cbr250",
+    "cbr 250",
+    "cbr-250",
+    "cbr250r"
+  ],
+  "motor": "249 cc, 1 cilindro, refrigeración líquida",
+  "aceite_motor": {
+    "viscosidad": "SAE 10W-30",
+    "norma": "API SG o superior, JASO MA o MA2 (aceite para motos con embrague húmedo)",
+    "capacidad_con_filtro_l": 1.6,
+    "capacidad_sin_filtro_l": 1.5,
+    "intervalo_km": 6000,
+    "fuente": "Valor de referencia, por contrastar con el manual del propietario",
+    "verificado": false
+  },
+  "filtro_aceite": {
+    "codigo_original": null,
+    "equivalentes": [],
+    "fuente": "Valor de referencia, por contrastar con el manual del propietario",
+    "verificado": false
+  },
+  "torques_nm": {
+    "tapon_carter": null,
+    "filtro_aceite": null,
+    "fuente": "Valor de referencia, por contrastar con el manual del propietario",
+    "verificado": false
+  },
+  "medidas_herramientas": {
+    "tapon_carter_mm": null,
+    "fuente": "Valor de referencia, por contrastar con el manual del propietario",
+    "verificado": false
+  }
+}

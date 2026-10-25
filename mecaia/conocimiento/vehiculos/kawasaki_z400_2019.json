@@ -1,0 +1,35 @@
+{
+  "id": "kawasaki_z400_2019",
+  "tipo": "moto",
+  "marca": "Kawasaki",
+  "modelo": "Z400",
+  "anios": [2019, 2024],
+  "alias": ["z400", "z 400", "kawasaki 400"],
+  "motor": "399 cc, 2 cilindros en línea, refrigeración líquida (mismo motor que la Ninja 400)",
+  "aceite_motor": {
+    "viscosidad": "SAE 10W-40",
+    "norma": "API SG o superior, JASO MA o MA2",
+    "capacidad_con_filtro_l": 2.0,
+    "capacidad_sin_filtro_l": 1.6,
+    "intervalo_km": 6000,
+    "fuente": "Manual del propietario Kawasaki Z400",
+    "verificado": false
+  },
+  "filtro_aceite": {
+    "codigo_original": "Kawasaki 16097-0008",
+    "equivalentes": ["HiFlo HF303"],
+    "fuente": "Catálogo de repuestos Kawasaki",
+    "verificado": false
+  },
+  "torques_nm": {
+    "tapon_carter": 30,
+    "filtro_aceite": 17.5,
+    "fuente": "Manual de servicio Kawasaki Z400",
+    "verificado": false
+  },
+  "medidas_herramientas": {
+    "tapon_carter_mm": 17,
+    "fuente": "Por confirmar en el manual de servicio",
+    "verificado": false
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "id": "honda_cb190r_2015",
+  "tipo": "moto",
+  "marca": "Honda",
+  "modelo": "CB190R",
+  "anios": [
+    2015,
+    2024
+  ],
+  "alias": [
+    "cb190r",
+    "cb 190r",
+    "cb-190r",
+    "cb190",
+    "cb 190"
+  ],
+  "motor": "184 cc, 1 cilindro, refrigeración por aire",
+  "aceite_motor": {
+    "viscosidad": "SAE 10W-30",
+    "norma": "API SG o superior, JASO MA o MA2 (aceite para motos con embrague húmedo)",
+    "capacidad_con_filtro_l": null,
+    "capacidad_sin_filtro_l": 1.0,
+    "intervalo_km": 3000,
+    "fuente": "Valor de referencia, por contrastar con el manual del propietario",
+    "verificado": false
+  },
+  "filtro_aceite": {
+    "codigo_original": null,
+    "equivalentes": [],
+    "fuente": "Valor de referencia, por contrastar con el manual del propietario",
+    "verificado": false
+  },
+  "torques_nm": {
+    "tapon_carter": null,
+    "filtro_aceite": null,
+    "fuente": "Valor de referencia, por contrastar con el manual del propietario",
+    "verificado": false
+  },
+  "medidas_herramientas": {
+    "tapon_carter_mm": null,
+    "fuente": "Valor de referencia, por contrastar con el manual del propietario",
+    "verificado": false
+  }
+}

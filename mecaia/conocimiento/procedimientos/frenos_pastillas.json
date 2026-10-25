@@ -1,0 +1,32 @@
+{
+  "id": "frenos_pastillas",
+  "nombre": "Revisión de pastillas de freno",
+  "palabras_clave": ["freno", "frenos", "pastillas", "balatas", "disco"],
+  "aplica_a": ["moto", "auto"],
+  "dificultad": "media",
+  "tiempo_estimado_min": 20,
+  "herramientas": ["Linterna", "Guantes"],
+  "alternativas_sin_herramientas": [
+    "Sin linterna: usa la luz del celular.",
+    "Si no logras ver las pastillas: cualquier taller de frenos las revisa sin costo o a bajo costo."
+  ],
+  "pasos": [
+    "Con el vehículo frío y estacionado, mira el material de la pastilla a través de la pinza (caliper).",
+    "Si el material que queda es menor a 2 a 3 mm, o llegó a la ranura indicadora, toca cambiarlas.",
+    "Revisa el nivel del líquido de frenos en el depósito: debe estar entre MIN y MAX."
+  ],
+  "recordatorios": [
+    "Las pastillas se cambian siempre por pares en el mismo eje.",
+    "Pastillas nuevas necesitan asentarse: frena suave los primeros 100 a 200 km."
+  ],
+  "advertencias_seguridad": [
+    "Los frenos son un sistema crítico: si no tienes experiencia, el cambio de pastillas debe hacerlo un mecánico.",
+    "No toques los discos después de andar: pueden estar muy calientes."
+  ],
+  "derivar_si": [
+    "Ruido metálico al frenar (puede estar rozando metal con metal).",
+    "El pedal o la manilla se sienten esponjosos o se van al fondo.",
+    "El vehículo se tira hacia un lado al frenar.",
+    "Hay fuga de líquido de frenos."
+  ]
+}

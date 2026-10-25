@@ -1,0 +1,41 @@
+{
+  "id": "suzuki_alto_08_2013",
+  "tipo": "auto",
+  "marca": "Suzuki",
+  "modelo": "Alto 800",
+  "anios": [
+    2013,
+    2024
+  ],
+  "alias": [
+    "suzuki alto",
+    "alto 800"
+  ],
+  "motor": "0.8 L bencinero, 3 cilindros",
+  "aceite_motor": {
+    "viscosidad": "SAE 5W-30",
+    "norma": "API SN o superior",
+    "capacidad_con_filtro_l": null,
+    "capacidad_sin_filtro_l": null,
+    "intervalo_km": 10000,
+    "fuente": "Valor de referencia, por contrastar con el manual del propietario",
+    "verificado": false
+  },
+  "filtro_aceite": {
+    "codigo_original": null,
+    "equivalentes": [],
+    "fuente": "Valor de referencia, por contrastar con el manual del propietario",
+    "verificado": false
+  },
+  "torques_nm": {
+    "tapon_carter": null,
+    "filtro_aceite": null,
+    "fuente": "Valor de referencia, por contrastar con el manual del propietario",
+    "verificado": false
+  },
+  "medidas_herramientas": {
+    "tapon_carter_mm": null,
+    "fuente": "Valor de referencia, por contrastar con el manual del propietario",
+    "verificado": false
+  }
+}

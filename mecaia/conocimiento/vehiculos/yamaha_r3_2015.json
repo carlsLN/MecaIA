@@ -1,0 +1,43 @@
+{
+  "id": "yamaha_r3_2015",
+  "tipo": "moto",
+  "marca": "Yamaha",
+  "modelo": "YZF-R3",
+  "anios": [
+    2015,
+    2024
+  ],
+  "alias": [
+    "r3",
+    "yzf-r3",
+    "yzf r3",
+    "yamaha r3"
+  ],
+  "motor": "321 cc, 2 cilindros en línea, refrigeración líquida",
+  "aceite_motor": {
+    "viscosidad": "SAE 10W-40",
+    "norma": "API SG o superior, JASO MA o MA2 (aceite para motos con embrague húmedo)",
+    "capacidad_con_filtro_l": 2.1,
+    "capacidad_sin_filtro_l": 1.8,
+    "intervalo_km": 5000,
+    "fuente": "Valor de referencia, por contrastar con el manual del propietario",
+    "verificado": false
+  },
+  "filtro_aceite": {
+    "codigo_original": "Yamaha 1WD-E3440-00",
+    "equivalentes": [],
+    "fuente": "Valor de referencia, por contrastar con el manual del propietario",
+    "verificado": false
+  },
+  "torques_nm": {
+    "tapon_carter": null,
+    "filtro_aceite": null,
+    "fuente": "Valor de referencia, por contrastar con el manual del propietario",
+    "verificado": false
+  },
+  "medidas_herramientas": {
+    "tapon_carter_mm": null,
+    "fuente": "Valor de referencia, por contrastar con el manual del propietario",
+    "verificado": false
+  }
+}
