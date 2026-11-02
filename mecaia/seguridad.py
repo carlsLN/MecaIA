@@ -10,7 +10,7 @@ from .texto import normalizar
 
 @dataclass
 class ResultadoSeguridad:
-    nivel: str  # "ok", "precaucion" o "detener"
+    nivel: str  # "ok", "precaucion", "diagnostico" o "detener"
     motivos: list[str] = field(default_factory=list)
 
     def como_dict(self) -> dict:
@@ -24,7 +24,7 @@ def _reglas() -> dict:
 
 def evaluar(mensaje: str) -> ResultadoSeguridad:
     texto = normalizar(mensaje)
-    for nivel in ("detener", "precaucion"):
+    for nivel in ("detener", "diagnostico", "precaucion"):
         motivos = [r["motivo"] for r in _reglas()[nivel] if re.search(r["patron"], texto)]
         if motivos:
             return ResultadoSeguridad(nivel, sorted(set(motivos)))

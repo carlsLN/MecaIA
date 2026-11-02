@@ -3,7 +3,8 @@
 Agente de IA que ayuda a personas dueñas de un auto o una moto con la mantención de su vehículo.
 Ante una pregunta como "¿qué aceite necesito para mi Kawasaki 400?", MecaIA:
 
-1. revisa si hay un riesgo de seguridad y, si lo hay, recomienda acudir a su mecánico de confianza,
+1. revisa si hay un riesgo de seguridad o un síntoma que requiere diagnóstico presencial (por ejemplo,
+   "no enciende y hace un ruido raro") y, si lo hay, recomienda acudir a su mecánico de confianza,
 2. confirma el modelo exacto del vehículo (pregunta si hay más de uno posible),
 3. busca el dato en una base de conocimiento verificada, en vez de responder de memoria,
 4. responde con el dato exacto, las herramientas, qué hacer si no las tienes, el paso a paso,
@@ -19,6 +20,13 @@ Proyecto de la asignatura Ingeniería de Soluciones con Inteligencia Artificial 
 
 Guía paso a paso para Windows y Visual Studio Code: [docs/como_ejecutar.md](docs/como_ejecutar.md).
 Diagramas y decisiones de diseño: [docs/diseno.md](docs/diseno.md).
+
+Documentos del proyecto (Word y PDF) en [docs/entregables/](docs/entregables/):
+
+- Informe Evaluación Parcial 2
+- Acta de Constitución v1.1
+- Propuesta de Proyecto v3.0
+- Diseño Conversacional v2.0
 
 Resumen (requiere Python 3.10 o superior):
 
@@ -67,7 +75,7 @@ cambia con la variable `MECAIA_MODELO` (por defecto `claude-opus-5-5`).
 | Memoria de largo plazo | `mecaia/memoria.py` (SQLite): vehículos y mantenciones de cada usuario entre conversaciones |
 | Planificación | El grafo ordena las etapas: seguridad → interpretar → aclarar, registrar o responder. Cada turno deja su plan en `estado["plan"]` (`--ver-plan`) |
 | Decisiones adaptativas | Aristas condicionales: recomienda acudir al mecánico de confianza si hay riesgo, responde con cordialidad a saludos y agradecimientos, pregunta si el modelo es ambiguo o falta, registra si el usuario cuenta una mantención, usa la memoria si no menciona el vehículo |
-| Evidencias de pruebas | `tests/` (59 pruebas), `evidencias/resultado_pruebas.txt`, `evidencias/conversacion_demo.md` |
+| Evidencias de pruebas | `tests/` (61 pruebas), `evidencias/resultado_pruebas.txt`, `evidencias/conversacion_demo.md` |
 
 ## Arquitectura
 
@@ -110,8 +118,8 @@ El chequeo de seguridad corre en código antes que el modelo de lenguaje: una pr
 | `mecaia/memoria.py` | Memoria de largo plazo (SQLite) |
 | `mecaia/respuestas.py` | Textos de respuesta del modo demo |
 | `mecaia/conocimiento/` | Base de conocimiento: 16 vehículos, 3 procedimientos y reglas de seguridad |
-| `docs/` | Diseño (diagramas, flujos, memoria) y guía de ejecución |
-| `tests/` | Pruebas automáticas (59) |
+| `docs/` | Diseño (diagramas, flujos, memoria), guía de ejecución, diagramas en PNG y documentos entregables |
+| `tests/` | Pruebas automáticas (61) |
 | `evidencias/` | Resultados de pruebas y conversación de ejemplo |
 | `scripts/generar_evidencias.py` | Genera la conversación de ejemplo |
 

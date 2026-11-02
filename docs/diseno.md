@@ -36,7 +36,7 @@ graph TD
 
 | Nodo | Qué decide |
 | --- | --- |
-| Seguridad | Reglas en código detectan frenos que fallan, olor a combustible, humo, sobrecalentamiento, etc. Si hay riesgo, el flujo termina recomendando acudir al mecánico de confianza, sin pasar por el modelo |
+| Seguridad | Reglas en código detectan riesgos (frenos que fallan, olor a combustible, humo, sobrecalentamiento) y síntomas que requieren diagnóstico presencial (no enciende, ruido raro, se apaga en marcha). Si hay riesgo, el flujo termina recomendando acudir al mecánico de confianza, sin pasar por el modelo |
 | Interpretar | Identifica vehículo, intención (consulta de un procedimiento, intervalo de mantención, estanque, registro o conversación) y procedimiento. Busca el vehículo en este orden: el mensaje, la respuesta a una pregunta anterior, la memoria de la conversación, la memoria de largo plazo |
 | Conversar | Responde saludos, agradecimientos y despedidas con calidez y ofrece seguir ayudando |
 | Aclarar | Pregunta cuando hay más de un modelo posible (ej. "Kawasaki 400") o falta el vehículo, y deja la pregunta pendiente en el estado |

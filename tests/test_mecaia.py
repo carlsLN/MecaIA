@@ -58,6 +58,13 @@ def test_seguridad_detener(texto):
     assert seguridad.evaluar(texto).nivel == "detener"
 
 
+@pytest.mark.parametrize("texto", ["mi auto no enciende y hace un ruido raro", "la moto se apaga sola"])
+def test_diagnostico_fuera_de_alcance(memoria, texto):
+    assert seguridad.evaluar(texto).nivel == "diagnostico"
+    respuesta = MecaIA("ana", memoria).responder(texto)
+    assert "diagnóstico presencial" in respuesta and "mecánico de confianza" in respuesta
+
+
 def test_seguridad_ok_y_precaucion():
     assert seguridad.evaluar("qué aceite uso").nivel == "ok"
     assert seguridad.evaluar("me chirrían los frenos").nivel == "precaucion"

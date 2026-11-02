@@ -1,68 +1,69 @@
 ============================= test session starts ==============================
 platform linux -- Python 3.13.17, pytest-9.1.1, pluggy-1.7.0 -- /usr/bin/python
-cachedir: .pytest_cache
-rootdir: /home/claude/mecaia-remoto
+rootdir: MecaIA
 plugins: langsmith-0.14.12, anyio-4.15.1
-collecting ... collected 59 items
+collecting ... collected 61 items
 
-tests/test_mecaia.py::test_kawasaki_400_es_ambiguo PASSED
-tests/test_mecaia.py::test_modelo_especifico_y_anio PASSED
-tests/test_mecaia.py::test_vehiculos_pedidos[Hyundai Accent-hyundai_accent_14_2011] PASSED
-tests/test_mecaia.py::test_vehiculos_pedidos[mi elantra-hyundai_elantra_16_2016] PASSED
-tests/test_mecaia.py::test_vehiculos_pedidos[Suzuki Swift-suzuki_swift_12_2017] PASSED
-tests/test_mecaia.py::test_vehiculos_pedidos[Suzuki Alto-suzuki_alto_08_2013] PASSED
-tests/test_mecaia.py::test_vehiculos_pedidos[Toyota Yaris-toyota_yaris_15_2014] PASSED
-tests/test_mecaia.py::test_vehiculos_pedidos[Suzuki Gixxer 150-suzuki_gixxer_150_2015] PASSED
-tests/test_mecaia.py::test_vehiculos_pedidos[KTM RC200-ktm_rc_200_2014] PASSED
-tests/test_mecaia.py::test_vehiculos_pedidos[MT-03-yamaha_mt03_2016] PASSED
-tests/test_mecaia.py::test_vehiculos_pedidos[Yamaha R3-yamaha_r3_2015] PASSED
-tests/test_mecaia.py::test_vehiculos_pedidos[Yamaha R15-yamaha_r15_v3_2017] PASSED
-tests/test_mecaia.py::test_vehiculos_pedidos[Honda CBR-250-honda_cbr250r_2011] PASSED
-tests/test_mecaia.py::test_vehiculos_pedidos[Honda CBR-300-honda_cbr300r_2014] PASSED
-tests/test_mecaia.py::test_vehiculos_pedidos[Honda CB-190R-honda_cb190r_2015] PASSED
-tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[honda_cb190r_2015] PASSED
-tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[honda_cbr250r_2011] PASSED
-tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[honda_cbr300r_2014] PASSED
-tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[hyundai_accent_14_2011] PASSED
-tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[hyundai_elantra_16_2016] PASSED
-tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[kawasaki_kz400_1974] PASSED
-tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[kawasaki_ninja_400_2018] PASSED
-tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[kawasaki_z400_2019] PASSED
-tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[ktm_rc_200_2014] PASSED
-tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[suzuki_alto_08_2013] PASSED
-tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[suzuki_gixxer_150_2015] PASSED
-tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[suzuki_swift_12_2017] PASSED
-tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[toyota_yaris_15_2014] PASSED
-tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[yamaha_mt03_2016] PASSED
-tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[yamaha_r15_v3_2017] PASSED
-tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[yamaha_r3_2015] PASSED
-tests/test_mecaia.py::test_procedimiento_por_palabras PASSED
-tests/test_mecaia.py::test_seguridad_detener[los frenos no responden] PASSED
-tests/test_mecaia.py::test_seguridad_detener[siento olor a bencina] PASSED
-tests/test_mecaia.py::test_seguridad_detener[sale humo del motor] PASSED
-tests/test_mecaia.py::test_seguridad_detener[se encendi\xf3 la luz de aceite] PASSED
-tests/test_mecaia.py::test_seguridad_detener[el motor se sobrecalent\xf3] PASSED
-tests/test_mecaia.py::test_seguridad_ok_y_precaucion PASSED
-tests/test_mecaia.py::test_memoria PASSED
-tests/test_mecaia.py::test_flujo_kawasaki_con_aclaracion PASSED
-tests/test_mecaia.py::test_memoria_largo_plazo_entre_conversaciones PASSED
-tests/test_mecaia.py::test_registrar_mantencion_y_recordatorio PASSED
-tests/test_mecaia.py::test_no_inventa_datos PASSED
-tests/test_mecaia.py::test_riesgo_recomienda_mecanico_de_confianza PASSED
-tests/test_mecaia.py::test_responde_cordial_a_gracias PASSED
-tests/test_mecaia.py::test_saludo_y_despedida[hola-\xa1Hola! Soy MecaIA] PASSED
-tests/test_mecaia.py::test_saludo_y_despedida[chao-\xa1Que te vaya muy bien!] PASSED
-tests/test_mecaia.py::test_las_respuestas_invitan_a_seguir_preguntando PASSED
-tests/test_mecaia.py::test_estanque_y_autonomia PASSED
-tests/test_mecaia.py::test_estanque_pregunta_el_vehiculo_si_falta PASSED
-tests/test_mecaia.py::test_estanque_sin_dato_no_inventa PASSED
-tests/test_mecaia.py::test_intervalo_bujias_auto PASSED
-tests/test_mecaia.py::test_intervalo_balatas_usa_tipo_del_vehiculo PASSED
-tests/test_mecaia.py::test_intervalo_correa_no_aplica_a_moto PASSED
-tests/test_mecaia.py::test_intervalo_aceite_incluye_dato_del_modelo PASSED
-tests/test_mecaia.py::test_cuanto_demora_una_mantencion PASSED
-tests/test_mecaia.py::test_tabla_general_de_mantenciones PASSED
-tests/test_mecaia.py::test_modo_claude_usa_herramientas PASSED
-tests/test_mecaia.py::test_modo_claude_respeta_seguridad_en_codigo PASSED
+tests/test_mecaia.py::test_kawasaki_400_es_ambiguo PASSED                [  1%]
+tests/test_mecaia.py::test_modelo_especifico_y_anio PASSED               [  3%]
+tests/test_mecaia.py::test_vehiculos_pedidos[Hyundai Accent-hyundai_accent_14_2011] PASSED [  4%]
+tests/test_mecaia.py::test_vehiculos_pedidos[mi elantra-hyundai_elantra_16_2016] PASSED [  6%]
+tests/test_mecaia.py::test_vehiculos_pedidos[Suzuki Swift-suzuki_swift_12_2017] PASSED [  8%]
+tests/test_mecaia.py::test_vehiculos_pedidos[Suzuki Alto-suzuki_alto_08_2013] PASSED [  9%]
+tests/test_mecaia.py::test_vehiculos_pedidos[Toyota Yaris-toyota_yaris_15_2014] PASSED [ 11%]
+tests/test_mecaia.py::test_vehiculos_pedidos[Suzuki Gixxer 150-suzuki_gixxer_150_2015] PASSED [ 13%]
+tests/test_mecaia.py::test_vehiculos_pedidos[KTM RC200-ktm_rc_200_2014] PASSED [ 14%]
+tests/test_mecaia.py::test_vehiculos_pedidos[MT-03-yamaha_mt03_2016] PASSED [ 16%]
+tests/test_mecaia.py::test_vehiculos_pedidos[Yamaha R3-yamaha_r3_2015] PASSED [ 18%]
+tests/test_mecaia.py::test_vehiculos_pedidos[Yamaha R15-yamaha_r15_v3_2017] PASSED [ 19%]
+tests/test_mecaia.py::test_vehiculos_pedidos[Honda CBR-250-honda_cbr250r_2011] PASSED [ 21%]
+tests/test_mecaia.py::test_vehiculos_pedidos[Honda CBR-300-honda_cbr300r_2014] PASSED [ 22%]
+tests/test_mecaia.py::test_vehiculos_pedidos[Honda CB-190R-honda_cb190r_2015] PASSED [ 24%]
+tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[honda_cb190r_2015] PASSED [ 26%]
+tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[honda_cbr250r_2011] PASSED [ 27%]
+tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[honda_cbr300r_2014] PASSED [ 29%]
+tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[hyundai_accent_14_2011] PASSED [ 31%]
+tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[hyundai_elantra_16_2016] PASSED [ 32%]
+tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[kawasaki_kz400_1974] PASSED [ 34%]
+tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[kawasaki_ninja_400_2018] PASSED [ 36%]
+tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[kawasaki_z400_2019] PASSED [ 37%]
+tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[ktm_rc_200_2014] PASSED [ 39%]
+tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[suzuki_alto_08_2013] PASSED [ 40%]
+tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[suzuki_gixxer_150_2015] PASSED [ 42%]
+tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[suzuki_swift_12_2017] PASSED [ 44%]
+tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[toyota_yaris_15_2014] PASSED [ 45%]
+tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[yamaha_mt03_2016] PASSED [ 47%]
+tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[yamaha_r15_v3_2017] PASSED [ 49%]
+tests/test_mecaia.py::test_cada_vehiculo_responde_sin_errores[yamaha_r3_2015] PASSED [ 50%]
+tests/test_mecaia.py::test_procedimiento_por_palabras PASSED             [ 52%]
+tests/test_mecaia.py::test_seguridad_detener[los frenos no responden] PASSED [ 54%]
+tests/test_mecaia.py::test_seguridad_detener[siento olor a bencina] PASSED [ 55%]
+tests/test_mecaia.py::test_seguridad_detener[sale humo del motor] PASSED [ 57%]
+tests/test_mecaia.py::test_seguridad_detener[se encendi\xf3 la luz de aceite] PASSED [ 59%]
+tests/test_mecaia.py::test_seguridad_detener[el motor se sobrecalent\xf3] PASSED [ 60%]
+tests/test_mecaia.py::test_diagnostico_fuera_de_alcance[mi auto no enciende y hace un ruido raro] PASSED [ 62%]
+tests/test_mecaia.py::test_diagnostico_fuera_de_alcance[la moto se apaga sola] PASSED [ 63%]
+tests/test_mecaia.py::test_seguridad_ok_y_precaucion PASSED              [ 65%]
+tests/test_mecaia.py::test_memoria PASSED                                [ 67%]
+tests/test_mecaia.py::test_flujo_kawasaki_con_aclaracion PASSED          [ 68%]
+tests/test_mecaia.py::test_memoria_largo_plazo_entre_conversaciones PASSED [ 70%]
+tests/test_mecaia.py::test_registrar_mantencion_y_recordatorio PASSED    [ 72%]
+tests/test_mecaia.py::test_no_inventa_datos PASSED                       [ 73%]
+tests/test_mecaia.py::test_riesgo_recomienda_mecanico_de_confianza PASSED [ 75%]
+tests/test_mecaia.py::test_responde_cordial_a_gracias PASSED             [ 77%]
+tests/test_mecaia.py::test_saludo_y_despedida[hola-\xa1Hola! Soy MecaIA] PASSED [ 78%]
+tests/test_mecaia.py::test_saludo_y_despedida[chao-\xa1Que te vaya muy bien!] PASSED [ 80%]
+tests/test_mecaia.py::test_las_respuestas_invitan_a_seguir_preguntando PASSED [ 81%]
+tests/test_mecaia.py::test_estanque_y_autonomia PASSED                   [ 83%]
+tests/test_mecaia.py::test_estanque_pregunta_el_vehiculo_si_falta PASSED [ 85%]
+tests/test_mecaia.py::test_estanque_sin_dato_no_inventa PASSED           [ 86%]
+tests/test_mecaia.py::test_intervalo_bujias_auto PASSED                  [ 88%]
+tests/test_mecaia.py::test_intervalo_balatas_usa_tipo_del_vehiculo PASSED [ 90%]
+tests/test_mecaia.py::test_intervalo_correa_no_aplica_a_moto PASSED      [ 91%]
+tests/test_mecaia.py::test_intervalo_aceite_incluye_dato_del_modelo PASSED [ 93%]
+tests/test_mecaia.py::test_cuanto_demora_una_mantencion PASSED           [ 95%]
+tests/test_mecaia.py::test_tabla_general_de_mantenciones PASSED          [ 96%]
+tests/test_mecaia.py::test_modo_claude_usa_herramientas PASSED           [ 98%]
+tests/test_mecaia.py::test_modo_claude_respeta_seguridad_en_codigo PASSED [100%]
 
-============================== 59 passed in 1.69s ==============================
+============================== 61 passed in 2.10s ==============================

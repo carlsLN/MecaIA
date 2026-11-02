@@ -78,7 +78,7 @@ Nunca escribas la API key dentro del código ni la subas a GitHub.
 python -m pytest -v
 ```
 
-Al final debe decir `59 passed`. El resultado de referencia está en
+Al final debe decir `61 passed`. El resultado de referencia está en
 `evidencias/resultado_pruebas.txt`.
 
 ## 7. Borrar la memoria para empezar de cero

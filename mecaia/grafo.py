@@ -2,7 +2,7 @@
 
 Flujo de cada mensaje:
 
-    seguridad ──riesgo──> recomendar_mecanico (acudir al mecánico de confianza)
+    seguridad ──riesgo o diagnóstico──> recomendar_mecanico (acudir al mecánico de confianza)
         │
     interpretar ──saludo, gracias o despedida──> conversar
         │        ──varios modelos o falta el vehículo──> aclarar
@@ -40,7 +40,7 @@ PROMPT_SISTEMA = """Eres MecaIA, un asistente de mantención para personas dueñ
 (no para talleres). Respondes en español, claro y cercano, como un amigo que sabe de mecánica.
 
 Reglas, en este orden de prioridad:
-1. Seguridad primero. Si hay un riesgo, no des pasos para reparar: explica por qué es peligroso, usa \
+1. Seguridad primero. Si hay un riesgo o un síntoma que requiere diagnóstico, no des pasos para reparar: explica por qué es peligroso, usa \
 recomendar_mecanico y sugiere acudir a su mecánico de confianza.
 2. Usa el vehículo confirmado que aparece en el contexto. Si no hay uno, identifícalo con buscar_vehiculo \
 o mis_vehiculos; si hay más de un candidato, pregunta cuál es y no adivines.
@@ -122,7 +122,7 @@ def crear_herramientas(memoria: Memoria) -> list:
 
     @tool
     def revisar_seguridad(descripcion: str, estado: Annotated[dict, InjectedState]) -> str:
-        """Evalúa si lo que describe el usuario es un riesgo. Devuelve nivel ok, precaucion o detener."""
+        """Evalúa si lo que describe es un riesgo o requiere diagnóstico: ok, precaucion, diagnostico o detener."""
         return h(estado).ejecutar("revisar_seguridad", {"descripcion": descripcion})
 
     @tool
@@ -275,7 +275,8 @@ def construir_grafo(memoria: Memoria, llm=None, checkpointer=None):
                 "plan": estado["plan"] + ["Decisión: preguntar antes de dar datos"]}
 
     def nodo_recomendar_mecanico(estado: Estado) -> dict:
-        return {"messages": [AIMessage(respuestas.recomendacion_mecanico(estado["seguridad"]["motivos"]))],
+        s = estado["seguridad"]
+        return {"messages": [AIMessage(respuestas.recomendacion_mecanico(s["motivos"], s["nivel"]))],
                 "plan": estado["plan"] + ["Decisión: recomendar acudir al mecánico de confianza, sin pasos de reparación"]}
 
     def nodo_registrar(estado: Estado) -> dict:
@@ -333,7 +334,7 @@ def construir_grafo(memoria: Memoria, llm=None, checkpointer=None):
     g.add_node("registrar", nodo_registrar)
     g.add_node("responder", nodo_responder)
     g.add_edge(START, "seguridad")
-    g.add_conditional_edges("seguridad", lambda e: "recomendar_mecanico" if e["seguridad"]["nivel"] == "detener"
+    g.add_conditional_edges("seguridad", lambda e: "recomendar_mecanico" if e["seguridad"]["nivel"] in ("detener", "diagnostico")
                             else "interpretar", ["recomendar_mecanico", "interpretar"])
     destinos = ["aclarar", "conversar", "registrar", "responder"]
     if llm is not None:

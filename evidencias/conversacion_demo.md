@@ -161,7 +161,7 @@ Esto es un tema de seguridad (falla de frenos), así que no te voy a dar pasos p
 
 **Cambio de aceite de motor para tu Kawasaki Ninja 400**
 
-Según tu historial, el último cambio fue el 2026-10-25 a los 12.000 km; el próximo toca cerca de los 18.000 km.
+Según tu historial, el último cambio fue el 2026-11-02 a los 12.000 km; el próximo toca cerca de los 18.000 km.
 
 **Lo que necesitas**
 - Aceite: SAE 10W-40, API SG o superior, JASO MA o MA2 (aceite para motos con embrague húmedo)

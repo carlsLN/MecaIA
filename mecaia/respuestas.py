@@ -14,7 +14,12 @@ def elegir(texto: str, candidatos: list[dict]) -> list[dict]:
 CIERRE = "¿Tienes alguna otra duda? Aquí estoy para ayudarte."
 
 
-def recomendacion_mecanico(motivos: list[str]) -> str:
+def recomendacion_mecanico(motivos: list[str], nivel: str = "detener") -> str:
+    if nivel == "diagnostico":
+        return (f"Lo que describes ({', '.join(motivos).lower()}) puede tener varias causas y necesita un "
+                "diagnóstico presencial, que va más allá de lo que puedo evaluar de forma confiable. "
+                "Te recomiendo no forzar el vehículo y acudir a tu mecánico de confianza. Cuéntale cuándo "
+                f"empezó, en qué condiciones pasa y si notas algún ruido u olor. {CIERRE}")
     return (f"Esto es un tema de seguridad ({', '.join(motivos).lower()}), así que no te voy a dar pasos "
             "para repararlo tú. Lo mejor es que no uses el vehículo y acudas a tu mecánico de confianza "
             "(si no es seguro moverlo, pide una grúa o asistencia en ruta). "
