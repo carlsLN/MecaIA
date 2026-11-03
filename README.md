@@ -27,6 +27,7 @@ Documentos del proyecto (Word y PDF) en [docs/entregables/](docs/entregables/):
 - Acta de Constitución v1.1
 - Propuesta de Proyecto v3.0
 - Diseño Conversacional v2.0
+- Presentación y guion de la defensa
 
 Resumen (requiere Python 3.10 o superior):
 
