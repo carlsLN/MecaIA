@@ -70,3 +70,11 @@ class Memoria:
             (rowid, fecha or date.today().isoformat(), tipo, km, notas),
         )
         self.db.commit()
+
+    def borrar_usuario(self, usuario: str) -> int:
+        """Elimina todos los datos de un usuario (derecho de cancelación, Ley 19.628)."""
+        ids = [f["id"] for f in self.db.execute("SELECT id FROM vehiculos WHERE usuario = ?", (usuario,))]
+        self.db.executemany("DELETE FROM mantenciones WHERE vehiculo = ?", [(i,) for i in ids])
+        self.db.execute("DELETE FROM vehiculos WHERE usuario = ?", (usuario,))
+        self.db.commit()
+        return len(ids)

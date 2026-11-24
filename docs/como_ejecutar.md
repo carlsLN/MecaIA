@@ -78,10 +78,43 @@ Nunca escribas la API key dentro del código ni la subas a GitHub.
 python -m pytest -v
 ```
 
-Al final debe decir `61 passed`. El resultado de referencia está en
+Al final debe decir `71 passed`. El resultado de referencia está en
 `evidencias/resultado_pruebas.txt`.
 
 ## 7. Borrar la memoria para empezar de cero
 
 El agente guarda la memoria en dos archivos que se crean solos: `mecaia.db` (vehículos y
 mantenciones) y `mecaia_conversaciones.db` (conversaciones). Bórralos para partir de cero.
+
+## 8. Medir el agente (Evaluación 3)
+
+Con el entorno virtual activo:
+
+```bash
+python scripts/evaluar.py
+```
+
+Tarda menos de un minuto. Ejecuta 54 casos de prueba 5 veces cada uno y muestra en la terminal la
+precisión, la consistencia, los errores y la latencia. Los resultados quedan en
+`evidencias/observabilidad/`.
+
+## 9. Abrir el dashboard
+
+```bash
+streamlit run dashboard/app.py
+```
+
+Se abre solo en el navegador (si no, entra a http://localhost:8501). Para cerrarlo, vuelve a la
+terminal y presiona Ctrl+C. Si cambias el código y vuelves a correr `scripts/evaluar.py`, recarga la
+página del dashboard para ver los datos nuevos.
+
+Lo que escribas en el chat (`python main.py`) también queda registrado en `logs/trazas.jsonl` y se
+puede ver en la pestaña **Explorador de trazas**, eligiendo "Uso real".
+
+## 10. Borrar tus datos
+
+```bash
+python main.py --usuario ana --borrar-mis-datos
+```
+
+Borra los vehículos, las mantenciones y las trazas de ese usuario.

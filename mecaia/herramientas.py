@@ -1,5 +1,6 @@
 """Herramientas del agente: consultan la base verificada o leen y escriben la memoria."""
 import json
+import time
 
 from . import base_conocimiento as bc
 from . import seguridad
@@ -7,15 +8,24 @@ from .memoria import Memoria
 
 
 class Herramientas:
-    def __init__(self, memoria: Memoria, usuario: str):
+    def __init__(self, memoria: Memoria, usuario: str, trazador=None):
         self.memoria = memoria
         self.usuario = usuario
+        self.trazador = trazador
 
     def ejecutar(self, nombre: str, entrada: dict) -> str:
         metodo = getattr(self, nombre, None)
         if metodo is None or nombre.startswith("_") or nombre == "ejecutar":
             raise ValueError(f"Herramienta desconocida: {nombre}")
-        return json.dumps(metodo(**entrada), ensure_ascii=False)
+        inicio, error = time.perf_counter(), None
+        try:
+            return json.dumps(metodo(**entrada), ensure_ascii=False)
+        except Exception as e:
+            error = e
+            raise
+        finally:
+            if self.trazador is not None:
+                self.trazador.registrar_herramienta(nombre, (time.perf_counter() - inicio) * 1000, error)
 
     def revisar_seguridad(self, descripcion: str) -> dict:
         return seguridad.evaluar(descripcion).como_dict()
