@@ -32,6 +32,7 @@ from . import base_conocimiento as bc
 from . import respuestas, seguridad
 from .herramientas import Herramientas
 from .memoria import Memoria
+from .observabilidad import Trazador
 from .texto import normalizar
 
 MODELO = os.environ.get("MECAIA_MODELO", "claude-opus-5-5")
@@ -114,11 +115,11 @@ def _km(texto: str) -> int | None:
     return int(re.sub(r"\D", "", m.group(1))) if m else None
 
 
-def crear_herramientas(memoria: Memoria) -> list:
+def crear_herramientas(memoria: Memoria, trazador: Trazador | None = None) -> list:
     """Herramientas de consulta y escritura para el modelo. El usuario se toma del estado."""
 
     def h(estado: dict) -> Herramientas:
-        return Herramientas(memoria, estado.get("usuario", "invitado"))
+        return Herramientas(memoria, estado.get("usuario", "invitado"), trazador)
 
     @tool
     def revisar_seguridad(descripcion: str, estado: Annotated[dict, InjectedState]) -> str:
@@ -175,9 +176,12 @@ def crear_herramientas(memoria: Memoria) -> list:
             consultar_mantenimiento_periodico, mis_vehiculos, guardar_vehiculo, registrar_mantencion, recomendar_mecanico]
 
 
-def construir_grafo(memoria: Memoria, llm=None, checkpointer=None):
-    """Arma el grafo. Sin llm funciona en modo demo (respuestas desde la base, sin costo)."""
-    herramientas = crear_herramientas(memoria)
+def construir_grafo(memoria: Memoria, llm=None, checkpointer=None, trazador: Trazador | None = None):
+    """Arma el grafo. Sin llm funciona en modo demo (respuestas desde la base, sin costo).
+
+    Si se entrega un trazador, cada nodo queda medido (tiempo, CPU, memoria, tokens y errores).
+    """
+    herramientas = crear_herramientas(memoria, trazador)
 
     def nodo_seguridad(estado: Estado) -> dict:
         r = seguridad.evaluar(_ultimo_texto(estado))
@@ -325,20 +329,23 @@ def construir_grafo(memoria: Memoria, llm=None, checkpointer=None):
         paso = f"Agente: usa {', '.join(nombres)}" if nombres else "Agente: responde"
         return {"messages": [respuesta], "plan": estado["plan"] + [paso]}
 
+    def nodo(nombre: str, funcion):
+        return trazador.envolver_nodo(nombre, funcion) if trazador else funcion
+
     g = StateGraph(Estado)
-    g.add_node("seguridad", nodo_seguridad)
-    g.add_node("interpretar", nodo_interpretar)
-    g.add_node("aclarar", nodo_aclarar)
-    g.add_node("conversar", nodo_conversar)
-    g.add_node("recomendar_mecanico", nodo_recomendar_mecanico)
-    g.add_node("registrar", nodo_registrar)
-    g.add_node("responder", nodo_responder)
+    g.add_node("seguridad", nodo("seguridad", nodo_seguridad))
+    g.add_node("interpretar", nodo("interpretar", nodo_interpretar))
+    g.add_node("aclarar", nodo("aclarar", nodo_aclarar))
+    g.add_node("conversar", nodo("conversar", nodo_conversar))
+    g.add_node("recomendar_mecanico", nodo("recomendar_mecanico", nodo_recomendar_mecanico))
+    g.add_node("registrar", nodo("registrar", nodo_registrar))
+    g.add_node("responder", nodo("responder", nodo_responder))
     g.add_edge(START, "seguridad")
     g.add_conditional_edges("seguridad", lambda e: "recomendar_mecanico" if e["seguridad"]["nivel"] in ("detener", "diagnostico")
                             else "interpretar", ["recomendar_mecanico", "interpretar"])
     destinos = ["aclarar", "conversar", "registrar", "responder"]
     if llm is not None:
-        g.add_node("agente", nodo_agente)
+        g.add_node("agente", nodo("agente", nodo_agente))
         g.add_node("herramientas", ToolNode(herramientas))
         g.add_conditional_edges("agente", tools_condition, {"tools": "herramientas", END: END})
         g.add_edge("herramientas", "agente")
@@ -349,22 +356,52 @@ def construir_grafo(memoria: Memoria, llm=None, checkpointer=None):
     return g.compile(checkpointer=checkpointer or InMemorySaver())
 
 
+MENSAJE_ERROR = ("Tuve un problema interno y no pude responder esta vez. Intenta de nuevo en un momento; "
+                 "si es urgente o hay un riesgo, acude a tu mecánico de confianza.")
+
+
 class MecaIA:
-    """Interfaz simple sobre el grafo: un objeto por usuario, una conversación por thread_id."""
+    """Interfaz simple sobre el grafo: un objeto por usuario, una conversación por thread_id.
+
+    Cada turno queda registrado por el trazador (ver observabilidad.py). Si el modelo de lenguaje
+    falla (por ejemplo, la API key no tiene créditos), el turno se responde con el modo demo.
+    """
 
     def __init__(self, usuario: str = "invitado", memoria: Memoria | None = None,
-                 llm=None, checkpointer=None):
+                 llm=None, checkpointer=None, trazador: Trazador | None = None):
         self.usuario = usuario
-        self.grafo = construir_grafo(memoria or Memoria(), llm, checkpointer)
+        self.memoria = memoria or Memoria()
+        self.checkpointer = checkpointer or InMemorySaver()
+        self.trazador = trazador or Trazador()  # sin ruta: no escribe archivo
+        self.llm = llm
+        self.grafo = construir_grafo(self.memoria, llm, self.checkpointer, self.trazador)
+        self._grafo_demo = None if llm is not None else self.grafo
         self.ultimo_plan: list[str] = []
 
     def responder(self, texto: str, conversacion: str = "principal") -> str:
         config = {"configurable": {"thread_id": f"{self.usuario}:{conversacion}"}}
-        estado = self.grafo.invoke(
-            {"messages": [HumanMessage(texto)], "usuario": self.usuario, "plan": []}, config)
+        entrada = {"messages": [HumanMessage(texto)], "usuario": self.usuario, "plan": []}
+        self.trazador.iniciar_turno(self.usuario, conversacion, texto,
+                                    "claude" if self.llm is not None else "demo")
+        try:
+            try:
+                estado = self.grafo.invoke(entrada, config)
+            except Exception as e:
+                if self.llm is None:
+                    raise
+                # Respaldo: el modelo falló, se responde con la base de conocimiento (modo demo)
+                self.trazador.marcar_respaldo(e)
+                if self._grafo_demo is None:
+                    self._grafo_demo = construir_grafo(self.memoria, None, self.checkpointer, self.trazador)
+                estado = self._grafo_demo.invoke(entrada, config)
+        except Exception as e:
+            self.ultimo_plan = ["Error interno: se responde con un mensaje seguro"]
+            self.trazador.terminar_turno(MENSAJE_ERROR, {"plan": self.ultimo_plan}, error=e)
+            return MENSAJE_ERROR
         self.ultimo_plan = estado["plan"]
-        ultimo = estado["messages"][-1]
-        return str(ultimo.text)
+        respuesta = str(estado["messages"][-1].text)
+        self.trazador.terminar_turno(respuesta, estado)
+        return respuesta
 
 
 def crear_llm():

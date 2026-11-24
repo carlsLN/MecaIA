@@ -14,7 +14,8 @@ Ante una pregunta como "¿qué aceite necesito para mi Kawasaki 400?", MecaIA:
 6. recuerda los vehículos y las mantenciones del usuario para las próximas consultas,
 7. conversa con cordialidad: responde saludos y agradecimientos, y siempre ofrece seguir ayudando.
 
-Proyecto de la asignatura Ingeniería de Soluciones con Inteligencia Artificial (Evaluación Parcial 2).
+Proyecto de la asignatura Ingeniería de Soluciones con Inteligencia Artificial (Evaluaciones Parciales 2 y 3).
+La Evaluación 3 agrega observabilidad: trazas de cada ejecución, métricas y un dashboard (ver más abajo).
 
 ## Cómo ejecutarlo
 
@@ -49,6 +50,10 @@ python scripts/generar_evidencias.py
 
 # Imprimir el grafo del agente en formato Mermaid
 python main.py --demo --grafo
+
+# Observabilidad (Evaluación 3)
+python scripts/evaluar.py              # corre 54 casos de prueba y calcula las métricas
+streamlit run dashboard/app.py         # abre el dashboard en el navegador
 ```
 
 Opciones de `main.py`:
@@ -60,6 +65,9 @@ Opciones de `main.py`:
 | `--conversacion` | Identificador de la conversación (memoria de corto plazo) |
 | `--ver-plan` | Muestra las decisiones que tomó el agente en cada turno |
 | `--grafo` | Imprime el diagrama del grafo y termina |
+| `--trazas` | Archivo de trazas (por defecto `logs/trazas.jsonl`) |
+| `--sin-trazas` | No guarda trazas |
+| `--borrar-mis-datos` | Borra los vehículos, mantenciones y trazas del usuario y termina |
 
 Si no hay `ANTHROPIC_API_KEY` definida, `main.py` usa el modo demo automáticamente. El modelo se
 cambia con la variable `MECAIA_MODELO` (por defecto `claude-opus-5-5`).
@@ -76,7 +84,38 @@ cambia con la variable `MECAIA_MODELO` (por defecto `claude-opus-5-5`).
 | Memoria de largo plazo | `mecaia/memoria.py` (SQLite): vehículos y mantenciones de cada usuario entre conversaciones |
 | Planificación | El grafo ordena las etapas: seguridad → interpretar → aclarar, registrar o responder. Cada turno deja su plan en `estado["plan"]` (`--ver-plan`) |
 | Decisiones adaptativas | Aristas condicionales: recomienda acudir al mecánico de confianza si hay riesgo, responde con cordialidad a saludos y agradecimientos, pregunta si el modelo es ambiguo o falta, registra si el usuario cuenta una mantención, usa la memoria si no menciona el vehículo |
-| Evidencias de pruebas | `tests/` (61 pruebas), `evidencias/resultado_pruebas.txt`, `evidencias/conversacion_demo.md` |
+| Evidencias de pruebas | `tests/` (71 pruebas), `evidencias/resultado_pruebas.txt`, `evidencias/conversacion_demo.md` |
+
+## Observabilidad (Evaluación Parcial 3)
+
+Cada mensaje que responde el agente deja un registro en formato JSONL (una línea por evento):
+un evento por cada nodo del grafo (duración, CPU, memoria, decisión, tokens y errores), uno por cada
+herramienta y un resumen del turno (ruta seguida, vehículo, nivel de seguridad, latencia total y si
+hubo que usar el respaldo del modo demo). El nombre del usuario se guarda anonimizado.
+
+| Pieza | Dónde está |
+| --- | --- |
+| Trazas | `mecaia/observabilidad.py`; al chatear se guardan en `logs/trazas.jsonl` |
+| Casos de prueba (54, en 9 categorías) | `evaluacion/casos.json` |
+| Cálculo de métricas | `scripts/evaluar.py` |
+| Resultados | `evidencias/observabilidad/` (`metricas.json`, `resultados_casos.csv`, trazas y capturas) |
+| Dashboard | `dashboard/app.py` (Streamlit) |
+| Análisis, recomendaciones, ética y privacidad | [docs/observabilidad.md](docs/observabilidad.md) |
+
+Métricas que calcula `scripts/evaluar.py`:
+
+| Métrica | Qué mide |
+| --- | --- |
+| Precisión | % de turnos en que el agente hace lo correcto (camino, vehículo, seguridad y contenido) |
+| Consistencia | Misma respuesta al repetir una pregunta, y misma decisión ante preguntas dichas con otras palabras |
+| Frecuencia de errores | Excepciones, respaldos al modo demo y fallos por tipo de chequeo |
+| Latencia | p50, p95, p99 y máximo, por turno, por nodo y por categoría |
+| Uso de recursos | CPU, memoria pico, tokens del modelo y costo de construir el agente |
+
+Si el modelo de lenguaje falla (por ejemplo, la API key no tiene créditos), el agente responde con
+el modo demo y lo deja anotado en la traza. Para evaluar con Claude: `python scripts/evaluar.py --modo claude`.
+
+![Dashboard: resumen](evidencias/observabilidad/capturas/1_resumen.png)
 
 ## Arquitectura
 
@@ -118,11 +157,15 @@ El chequeo de seguridad corre en código antes que el modelo de lenguaje: una pr
 | `mecaia/base_conocimiento.py` | Búsqueda de vehículos y procedimientos |
 | `mecaia/memoria.py` | Memoria de largo plazo (SQLite) |
 | `mecaia/respuestas.py` | Textos de respuesta del modo demo |
+| `mecaia/observabilidad.py` | Trazas de ejecución (JSONL), anonimización y borrado de datos |
 | `mecaia/conocimiento/` | Base de conocimiento: 16 vehículos, 3 procedimientos y reglas de seguridad |
 | `docs/` | Diseño (diagramas, flujos, memoria), guía de ejecución, diagramas en PNG y documentos entregables |
-| `tests/` | Pruebas automáticas (61) |
-| `evidencias/` | Resultados de pruebas y conversación de ejemplo |
+| `tests/` | Pruebas automáticas (71) |
+| `evidencias/` | Resultados de pruebas, conversación de ejemplo y resultados de observabilidad |
 | `scripts/generar_evidencias.py` | Genera la conversación de ejemplo |
+| `scripts/evaluar.py` | Corre los casos de prueba y calcula las métricas |
+| `evaluacion/casos.json` | Casos de prueba de la evaluación de observabilidad |
+| `dashboard/app.py` | Dashboard de Streamlit |
 
 ## Base de conocimiento
 
@@ -150,4 +193,6 @@ crear un archivo JSON en `mecaia/conocimiento/vehiculos/` con la misma estructur
 
 - El modo demo reconoce intenciones con palabras clave; el modo Claude entiende preguntas libres.
 - Los datos técnicos aún no están verificados contra manuales oficiales.
-- La detección de riesgos usa reglas fijas y puede no reconocer descripciones poco comunes.
+- La detección de riesgos usa reglas fijas y puede no reconocer descripciones poco comunes
+  (la evaluación encontró 4 de 16 casos de riesgo sin detectar; ver `docs/observabilidad.md`).
+- Si el vehículo no está en la base, el agente vuelve a preguntar por él en vez de decir que no lo tiene.
